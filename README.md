@@ -27,3 +27,9 @@
 
 - Node 5.10.x or above
 - NPM 3.8.x or above
+
+## Additional Database SETUP
+
+In the terminal while in the project directory folder run: `psql < dbinit.sql`.
+This will set up the database for the application.
+
