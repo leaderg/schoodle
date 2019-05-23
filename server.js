@@ -43,6 +43,39 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
+app.get("/newevent", (req, res) => {
+  res.render("newevent");
+});
+
+app.post("/newevent", (req, res) => {
+  console.log("receiving request")
+  knex('events').insert({
+    title: req.body.title,
+    description: req.body.description,
+    // location: req.body.location
+  }).asCallback((err, result) => {
+   if (err) {
+    return console.error("Connection Error", err);
+  }
+  console.dir(result);
+  res.send("Got it");
+  // req.body.name
+  // req.body.email
+});
+});
+
+app.get("/:eventID/times", (req, res) => {
+  res.render("times");
+});
+
+app.get("/:eventID/url", (req, res) => {
+  res.render("url");
+});
+
+app.get("/:sharedurl", (req, res) => {
+  res.render("option");
+});
+
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
 });

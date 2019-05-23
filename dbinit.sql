@@ -18,6 +18,7 @@ CREATE TABLE events (
   id serial PRIMARY KEY,
   title VARCHAR(50) NOT NULL,
   description VARCHAR(400),
+  location VARCHAR(50),
   creator_id int REFERENCES users(id)
 );
 
