@@ -21,6 +21,7 @@ exports.up = function(knex, Promise) {
     table.increments('id');
     table.biginteger('usersID').references('id').inTable('users');
     table.biginteger('eventsID').references('id').inTable('events');
+    table.string('start_date');
     table.string('start_time');
   });
 };
