@@ -6,14 +6,45 @@
     <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
     <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" type="text/css" />
 
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
+
     <script type="text/javascript" src="/scripts/app.js"></script>
+
+
   </head>
 
   <body>
     <h1>Welcome to Schoodle</h1>
-      <a href="#" class="previous">&laquo; Previous</a>
-      <a href="#" class="next">Next &raquo;</a>
+
+
+
+
+    <div class="container">
+      <form method = "POST" action="/:eventID/times">
+        <h3>Bootstrap Multi Select Date Picker</h3>
+        pick the date
+        <input type="text" class="form-control date" name = "date" placeholder="Pick the date">
+<!--         pick the time
+        <input type="text" class="form-control" name = "time" placeholder="Pick the time">
+
+pick the date
+        <input type="text" class="form-control date" name = "date" placeholder="Pick the date">
+        pick the time
+        <input type="text" class="form-control" name = "time" placeholder="Pick the time">
+        <input type="text" class="form-control" name = "time" placeholder="Pick the time">
+ -->
+        <button type="submit" class="btn btn-primary">Back</button>
+      <button type="submit" class="btn btn-primary">Next</button>
+     </form>
+
+    </div>
+
+
+
+
   </body>
 </html>

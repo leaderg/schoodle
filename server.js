@@ -76,6 +76,22 @@ app.get("/:sharedurl", (req, res) => {
   res.render("option");
 });
 
+
+app.post("/:eventID/times", (req, res) => {
+  console.log("receiving request")
+  console.log(req.body)
+  knex('options').insert({
+    time: req.body.date,
+  }).asCallback((err, result) => {
+   if (err) {
+    return console.error("Connection Error", err);
+  }
+  console.dir(result);
+  res.send("Got it");
+});
+});
+
+
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
 });
