@@ -68,8 +68,7 @@ app.post("/newevent", (req, res) => {
         return console.error("Connection Error", err);
       }
       console.dir(result);
-      res.send(`Got the data.
-        event ID URL: ${result[0]}`);
+      res.redirect(`${result[0]}/times`);
     });
   });
 });
