@@ -49,19 +49,29 @@ app.get("/newevent", (req, res) => {
 
 app.post("/newevent", (req, res) => {
   console.log("receiving request")
-  knex('events').insert({
-    title: req.body.title,
-    description: req.body.description,
-    // location: req.body.location
-  }).asCallback((err, result) => {
-   if (err) {
-    return console.error("Connection Error", err);
-  }
-  console.dir(result);
-  res.send("Got it");
-  // req.body.name
-  // req.body.email
-});
+  knex('users').insert({
+    name: req.body.name,
+    email: req.body.email
+  }, 'id').asCallback((err, result) => {
+    console.log(result);
+    if (err) {
+      return console.error("Connection Error", err);
+    }
+    knex('events').insert({
+      title: req.body.title,
+      description: req.body.description,
+      location: req.body.location,
+      creatorID: result[0]
+    }).asCallback((err, result) => {
+      if (err) {
+        return console.error("Connection Error", err);
+      }
+      console.dir(result);
+      res.send("Got it");
+      // req.body.name
+      // req.body.email
+    });
+  });
 });
 
 app.get("/:eventID/times", (req, res) => {
@@ -95,3 +105,4 @@ app.post("/:eventID/times", (req, res) => {
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
 });
+
