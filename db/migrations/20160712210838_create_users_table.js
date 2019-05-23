@@ -16,9 +16,15 @@ exports.up = function(knex, Promise) {
     table.string('location');
     table.string('url');
     table.biginteger('creatorID').references('id').inTable('users');
+  })
+  .createTable('options', function (table) {
+    table.increments('id');
+    table.biginteger('usersID').references('id').inTable('users');
+    table.biginteger('eventsID').references('id').inTable('events');
+    table.string('start_time');
   });
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTable('events').dropTable('cookies').dropTable('users');
+  return knex.schema.dropTable('options').dropTable('events').dropTable('cookies').dropTable('users');
 };
