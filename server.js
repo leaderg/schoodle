@@ -48,29 +48,32 @@ app.get("/newevent", (req, res) => {
 });
 
 app.post("/newevent", (req, res) => {
-  console.log("receiving request");
+  console.log("receiving request")
   knex('users').insert({
     name: req.body.name,
     email: req.body.email
-  }, "id").asCallback((err, result) => {
-   if (err) {
-    return console.error("Connection Error", err);
-  }
-  knex('events').insert({
-    title: req.body.title,
-    description: req.body.description,
-    location: req.body.location,
-    creatorID: result[0],
-    url: generateRandomString()
-  }, "events").asCallback((err, result) => {
-   if (err) {
-    return console.error("Connection Error", err);
-  }
-  console.dir(result);
-  res.send("Got it");
-});
-});
+  }, 'id').asCallback((err, result) => {
+    console.log(result);
+    if (err) {
+      return console.error("Connection Error", err);
+    }
+    knex('events').insert({
+      title: req.body.title,
+      description: req.body.description,
+      location: req.body.location,
+      creatorID: result[0]
+    }).asCallback((err, result) => {
+      if (err) {
+        return console.error("Connection Error", err);
+      }
+      console.dir(result);
+      res.send("Got it");
+      // req.body.name
+      // req.body.email
+    });
   });
+});
+
 
 app.get("/:eventID/times", (req, res) => {
   res.render("times");
@@ -89,6 +92,7 @@ app.listen(PORT, () => {
 });
 
 
+
 function generateRandomString() {
    let result           = '';
    let characters       = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
@@ -98,3 +102,4 @@ function generateRandomString() {
    };
    return result;
 };
+
