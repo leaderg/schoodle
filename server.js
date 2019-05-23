@@ -61,18 +61,18 @@ app.post("/newevent", (req, res) => {
       title: req.body.title,
       description: req.body.description,
       location: req.body.location,
-      creatorID: result[0]
-    }).asCallback((err, result) => {
+      creatorID: result[0],
+      url: generateRandomString()
+    }, 'url').asCallback((err, result) => {
       if (err) {
         return console.error("Connection Error", err);
       }
       console.dir(result);
-      res.send("Got it");
-      // req.body.name
-      // req.body.email
+      res.redirect(`${result[0]}/times`);
     });
   });
 });
+
 
 app.get("/:eventID/times", (req, res) => {
   res.render("times");
@@ -89,4 +89,16 @@ app.get("/:sharedurl", (req, res) => {
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
 });
+
+
+
+function generateRandomString() {
+   let result           = '';
+   let characters       = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+   let charactersLength = characters.length;
+   for ( let i = 0; i < 6; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   };
+   return result;
+};
 

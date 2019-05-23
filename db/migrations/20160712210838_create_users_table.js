@@ -19,8 +19,8 @@ exports.up = function(knex, Promise) {
   })
   .createTable('options', function (table) {
     table.increments('id');
-    table.biginteger('usersID').references('id').inTable('users');
-    table.biginteger('eventsID').references('id').inTable('events');
+    table.biginteger('users_id').references('id').inTable('users');
+    table.biginteger('events_id').references('id').inTable('events');
     table.string('start_date');
     table.string('start_time');
   });
