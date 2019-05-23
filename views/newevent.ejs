@@ -13,19 +13,19 @@
 
   <body>
     <h1>Welcome to Schoodle</h1>
-      <form action="">
+    <h2>Create a new event!</h2>
+      <form action="/newevent" method="POST">
         <h3> Title </h3>
-        <input class="form-control" type="text" name="longURL" style="width: 300px">
-        <h3> Location (optional) </h3>
-        <input class="form-control" type="text" name="longURL" style="width: 300px">
+        <input class="form-control" type="text" name="Title" style="width: 300px">
         <h3> Description (optional) </h3>
-        <input class="form-control" type="text" name="longURL" style="width: 300px">
+        <input class="form-control" type="text" name="description" style="width: 300px">
+        <h3> Location (optional) </h3>
+        <input class="form-control" type="text" name="location" style="width: 300px">
         <h3> Your name </h3>
-        <input class="form-control" type="text" name="longURL" style="width: 300px">
-        <h3> E-mail address </h3>
-        <input class="form-control" type="text" name="longURL" style="width: 300px">
-        <button type="submit" class="btn btn-primary">Back</button>
-        <button type="submit" class="btn btn-primary">Next</button>
+        <input class="form-control" type="text" name="name" style="width: 300px">
+        <h3> Your E-mail address </h3>
+        <input class="form-control" type="text" name="email" style="width: 300px">
+        <button type="submit" class="btn btn-primary">Create Event</button>
       </form>
   </body>
 </html>
