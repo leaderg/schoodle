@@ -44,7 +44,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/newevent", (req, res) => {
-  res.render("page2") //placeholder for page2 ejs name
+  res.render("newevent");
 });
 
 app.post("/newevent", (req, res) => {
@@ -62,6 +62,18 @@ app.post("/newevent", (req, res) => {
   // req.body.name
   // req.body.email
 });
+});
+
+app.get("/:eventID/times", (req, res) => {
+  res.render("times");
+});
+
+app.get("/:eventID/url", (req, res) => {
+  res.render("url");
+});
+
+app.get("/:sharedurl", (req, res) => {
+  res.render("option");
 });
 
 app.listen(PORT, () => {
