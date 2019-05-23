@@ -52,7 +52,7 @@ app.post("/newevent", (req, res) => {
   knex('events').insert({
     title: req.body.title,
     description: req.body.description,
-    // location: req.body.location
+    location: req.body.location
   }).asCallback((err, result) => {
    if (err) {
     return console.error("Connection Error", err);
