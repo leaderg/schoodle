@@ -74,14 +74,11 @@ app.post("/newevent", (req, res) => {
 });
 
 
-app.get("/times/:eventID", (req, res) => {
-  res.render("times");
-});
-
 app.get("/url/:eventID", (req, res) => {
   res.render("url");
 });
 
+<<<<<<< HEAD
 app.get("/events/:sharedurl", (req, res) => {
   let templatevars = {};
   let targetEvent = req.params.sharedurl;
@@ -99,6 +96,53 @@ app.get("/events/:sharedurl", (req, res) => {
       res.render('option', templatevars);
     });
   });
+
+
+
+app.get("/time", (req, res) => {
+  knex.select('*').from('date').where('id', '<', 5).asCallback((err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      let templateVars = { dates: result };
+      console.log(templateVars);
+      res.render("times", templateVars);
+    }
+  });
+});
+
+app.post("/:eventID/times", (req, res) => {
+  let results = req.body;
+  for (let ids in results){
+    for (let i = 0; i < results[ids].length; i++){
+      knex('time').insert({
+        dateID : ids,
+        start_time: results[ids][i]
+      }).asCallback((err, result) => {
+        if(err){
+          throw err;
+        }
+      });
+    }
+  }
+  res.send("ok");
+});
+
+app.post("/:eventID/dates", (req, res) => {
+  // console.log("receiving request")
+  console.log(req.body);
+  for (let element of req.body.date.split(",")){
+    knex('date').insert({
+        date: element
+      }).asCallback((err, result) => {
+       if (err) {
+        return console.error("Connection Error", err);
+      }
+    });
+  }
+  res.redirect(`/${req.param.eventID}/time`);
+});
+
 });
 
 app.listen(PORT, () => {

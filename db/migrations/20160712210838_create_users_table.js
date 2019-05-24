@@ -17,6 +17,16 @@ exports.up = function(knex, Promise) {
     table.string('url');
     table.biginteger('creatorID').references('id').inTable('users');
   })
+    .createTable('date', function (table) {
+    table.increments('id');
+    table.biginteger('eventsID').references('id').inTable('events');
+    table.string('date');
+  })
+    .createTable('time', function (table) {
+    table.increments('id');
+    table.biginteger('dateID').references('id').inTable('date');
+    table.string('start_time');
+  })
   .createTable('options', function (table) {
     table.increments('id');
     table.biginteger('users_id').references('id').inTable('users');
@@ -27,5 +37,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTable('options').dropTable('events').dropTable('cookies').dropTable('users');
+  return knex.schema.dropTable('time').dropTable('date').dropTable('options').dropTable('events').dropTable('cookies').dropTable('users');
 };
