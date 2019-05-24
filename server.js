@@ -64,7 +64,7 @@ app.post("/newevent", (req, res) => {
     email: req.body.email,
     cookieid: genCookie
   }, 'id').asCallback((err, result) => {
-    console.log(result);
+    // console.log(result);
     if (err) {
       return console.error("Connection Error", err);
     }
@@ -78,7 +78,7 @@ app.post("/newevent", (req, res) => {
       if (err) {
         return console.error("Connection Error", err);
       }
-      console.log(req.session.cookie_id);
+      // console.log(req.session.cookie_id);
       res.redirect(`/events/${result}/dates`);
     });
   });
@@ -86,10 +86,27 @@ app.post("/newevent", (req, res) => {
 
 
 app.get("/events/url/:eventID", (req, res) => {
-  res.render("url");
+  console.log(`caught at /events/url`);
+  if (!req.session.cookie_id){
+    res.render("participant");
+  }
+});
+
+app.get("/events/:eventID/dates", (req, res) => {
+  console.log(req.params)
+  knex.select('id').from('events').where('url', req.params.eventID).asCallback((err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      let templateVars = { id: result };
+      console.log(templateVars);
+      res.render("dates", templateVars);
+    }
+  });
 });
 
 app.get("/events/:sharedurl", (req, res) => {
+  console.log("hitting sharedurl")
   let templatevars = {};
   let targetEvent = req.params.sharedurl;
   knex('events').where({url: targetEvent})
@@ -121,6 +138,8 @@ app.get("/events/:eventID/time", (req, res) => {
   });
 });
 
+
+
 app.post("/events/:eventID/times", (req, res) => {
   let results = req.body;
   for (let ids in results){
@@ -138,8 +157,10 @@ app.post("/events/:eventID/times", (req, res) => {
   res.send("ok");
 });
 
+
+
 app.post("/events/:eventID/dates", (req, res) => {
-  // console.log("receiving request")
+  // console.log("")
   console.log(req.body);
   for (let element of req.body.date.split(",")){
     knex('date').insert({
