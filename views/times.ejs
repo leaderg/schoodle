@@ -24,7 +24,7 @@
 timeeeeeeeeeeeeeeeeeeeeee
 <form method = "POST" action="/:eventID/times">
   <% for(let element of dates){ %>
-    <li><%= element.date %> <input class="form-control" type="text" name=<%= element.date %>></li>
+    <li><%= element.date %> <input class="form-control" type="text" name=<%= element.id %>> <input class="form-control" type="text" name=<%= element.id %>></li>
   <% } %>
   <!-- <button type="submit" class="btn btn-primary">Back</button> -->
   <button type="submit" class="btn btn-primary">Next</button>

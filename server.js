@@ -96,7 +96,7 @@ app.get("/:eventID/url", (req, res) => {
 
 
 app.get("/time", (req, res) => {
-  knex.select('date').from('date').where('id', '<', 5).asCallback((err, result) => {
+  knex.select('*').from('date').where('id', '<', 5).asCallback((err, result) => {
     if (err) {
       throw err;
     } else {
@@ -108,17 +108,21 @@ app.get("/time", (req, res) => {
 });
 
 app.post("/:eventID/times", (req, res) => {
-  // console.log("receiving request")
   console.log(req.body);
-  // for (let element of req.body.date.split(",")){
-  //   knex('date').insert({
-  //       date: element
-  //     }).asCallback((err, result) => {
-  //      if (err) {
-  //       return console.error("Connection Error", err);
-  //     }
-  //   });
-  // }
+  let results = req.body;
+  for (let ids in results){
+    console.log("ids", ids)
+    for (let i = 0; i < results[ids].length; i++){
+      knex('time').insert({
+        dateID : ids,
+        start_time: results[ids][i]
+      }).asCallback((err, result) => {
+        if(err){
+          throw err;
+        }
+      });
+    }
+  }
   res.send("ok");
 });
 
