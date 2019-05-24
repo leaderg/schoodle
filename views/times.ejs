@@ -24,12 +24,21 @@ Pick a time
     <% for(let element of dates){ %>
       <li><%= element.date %> <input class="form-control" type="text" name= <%= element.id %>>
                               <input class="form-control" type="text" name= <%= element.id %>>
-
+                              <button type="button" onclick="myFunction()">Add new time</button>
   </li>
     <% } %>
-
+    <button type="submit" class="btn btn-primary">Back</button>
     <button type="submit" class="btn btn-primary">continue</button>
   </form>
+
+
+   <script>
+    function myFunction() {
+      var extra = document.createElement("input");
+      document.body.appendChild(extra);
+      extra.setAttribute('placeholder', <%= element.date %>);
+    }
+    </script>
 
 
 
