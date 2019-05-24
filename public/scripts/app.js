@@ -1,3 +1,4 @@
+
 $(() => {
   $.ajax({
     method: "GET",
@@ -13,4 +14,5 @@ $(() => {
   format: 'yyyy-mm-dd'
   });
 });
+
 
