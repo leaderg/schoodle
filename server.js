@@ -87,9 +87,7 @@ app.post("/newevent", (req, res) => {
 
 app.get("/events/url/:eventID", (req, res) => {
   console.log(`caught at /events/url`);
-  if (!req.session.cookie_id){
-    res.render("participant");
-  }
+
 });
 
 app.get("/events/:eventID/dates", (req, res) => {
@@ -105,24 +103,28 @@ app.get("/events/:eventID/dates", (req, res) => {
   });
 });
 
-app.get("/events/:sharedurl", (req, res) => {
-  console.log("hitting sharedurl")
-  let templatevars = {};
-  let targetEvent = req.params.sharedurl;
-  knex('events').where({url: targetEvent})
-  .then( x => {
-    templatevars.eventTitle = x[0].title;
-    templatevars.eventDescription = x[0].description;
-    templatevars.eventLocation = x[0].location;
-    return x[0].id;
-  })
-  .then( y => {
-    knex('options').where({events_id: y}).then( output => {
-      templatevars.datedata = output;
-      console.log(templatevars);
-      res.render('option', templatevars);
+app.get("/events/vote/:sharedurl", (req, res) => {
+  if (!req.session.cookie_id){
+    res.render("participant");
+  } else {
+    let templatevars = {};
+    let targetEvent = req.params.sharedurl;
+    knex('events').where({url: targetEvent})
+    .then( x => {
+      templatevars.eventTitle = x[0].title;
+      templatevars.eventDescription = x[0].description;
+      templatevars.eventLocation = x[0].location;
+      return x[0].id;
+    })
+    .then( y => {
+      knex('options').where({events_id: y}).then( output => {
+        templatevars.datedata = output;
+        console.log(templatevars);
+        res.render('option', templatevars);
+      });
     });
-  });
+  }
+});
 
 
 
@@ -174,7 +176,6 @@ app.post("/events/:eventID/dates", (req, res) => {
   res.redirect(`/${req.param.eventID}/time`);
 });
 
-});
 
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
