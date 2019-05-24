@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Home Page</title>
+
+    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+
+    <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+    <script type="text/javascript" src="/scripts/app.js"></script>
+  </head>
+
+  <body>
+    <h1>Welcome to Schoodle</h1>
+    <h3>Your Friend wants you to come to an event</h3>
+    <p>We need some information so that you can help decide the times!</p>
+
+    <form action="/newuser" method="POST">
+        <input class="form-control" type="text" name="name" placeholder="Your Name" style="width: 300px">
+        <input class="form-control" type="text" name="email" placeholder="Your Email" style="width: 300px">
+        <input type="hidden" name="sharedurl" value="<%=sharedurl%>">
+        <button type="submit">Get Started</button>
+    </form>
+
+  </body>
+</html>

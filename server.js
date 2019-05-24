@@ -13,6 +13,7 @@ const knexConfig  = require("./knexfile");
 const knex        = require("knex")(knexConfig[ENV]);
 const morgan      = require('morgan');
 const knexLogger  = require('knex-logger');
+const cookieSession = require('cookie-session');
 
 // Seperated Routes for each Resource
 const usersRoutes = require("./routes/users");
@@ -24,6 +25,13 @@ app.use(morgan('dev'));
 
 // Log knex SQL queries to STDOUT as well
 app.use(knexLogger(knex));
+
+//Sets up cookies
+app.use(cookieSession({
+  name: 'session',
+  keys: ['key1'],
+  maxAge: 24 * 60 * 60 * 1000
+}));
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -49,11 +57,14 @@ app.get("/newevent", (req, res) => {
 
 app.post("/newevent", (req, res) => {
   console.log("receiving request")
+  let genCookie = generateRandomString();
+  req.session.cookie_id = genCookie;
   knex('users').insert({
     name: req.body.name,
-    email: req.body.email
+    email: req.body.email,
+    cookieid: genCookie
   }, 'id').asCallback((err, result) => {
-    console.log(result);
+    // console.log(result);
     if (err) {
       return console.error("Connection Error", err);
     }
@@ -67,48 +78,12 @@ app.post("/newevent", (req, res) => {
       if (err) {
         return console.error("Connection Error", err);
       }
-      console.dir(result);
-      res.redirect(`events/${result[0]}/dates`);
+      res.redirect(`/events/dates/${result}`);
     });
   });
 });
 
-
-
-
-app.get("/events/:eventID/url", (req, res) => {
-
-  res.render("url");
-});
-
-app.get("/events/:sharedurl", (req, res) => {
-  let templatevars = {};
-  let targetEvent = req.params.sharedurl;
-  knex('events').where({url: targetEvent})
-  .then( x => {
-    templatevars.eventTitle = x[0].title;
-    templatevars.eventDescription = x[0].description;
-    templatevars.eventLocation = x[0].location;
-    return x[0].id;
-  })
-  .then( y => {
-    knex('options').where({events_id: y}).then( output => {
-      templatevars.datedata = output;
-      console.log(templatevars);
-      res.render('option', templatevars);
-    });
-  });
-});
-
-
-
-
-
-
-
-
-
-app.get("/events/:eventID/dates", (req, res) => {
+app.get("/events/dates/:eventID", (req, res) => {
   console.log(req.params)
   knex.select('id').from('events').where('url', req.params.eventID).asCallback((err, result) => {
     if (err) {
@@ -122,21 +97,71 @@ app.get("/events/:eventID/dates", (req, res) => {
   });
 });
 
-app.get("/events/:eventID/times", (req, res) => {
-console.log("test 1");
-  knex.select('id').from('events').where('url', req.params.eventID).asCallback((err,result)=>{
+
+
+
+app.get("/events/url/:eventID", (req, res) => {
+  res.render("url");
+});
+
+app.get("/events/dates/:eventID", (req, res) => {
+  console.log(req.params)
+  knex.select('id').from('events').where('url', req.params.eventID).asCallback((err, result) => {
     if (err) {
-console.log("err")
       throw err;
     } else {
-console.log("test 2", result[0].id)
+      let templateVars = {
+                          id: result,
+                          eventURL: req.params.eventID
+                         };
+      console.log(templateVars);
+      res.render("dates", templateVars);
+    }
+  });
+});
+
+
+app.get("/events/vote/:sharedurl", (req, res) => {
+  if (!req.session.cookie_id){
+    let templatevars = {};
+    templatevars.sharedurl = req.params.sharedurl;
+    res.render("participant", templatevars);
+  } else {
+    let templatevars = {};
+    let targetEvent = req.params.sharedurl;
+    knex('events').where({url: targetEvent})
+    .then( x => {
+      templatevars.eventTitle = x[0].title;
+      templatevars.eventDescription = x[0].description;
+      templatevars.eventLocation = x[0].location;
+      return x[0].id;
+    })
+    .then( y => {
+      knex('options').where({events_id: y}).then( output => {
+        templatevars.datedata = output;
+        console.log(templatevars);
+        res.render('option', templatevars);
+      });
+    });
+  }
+});
+
+
+
+
+
+app.get("/events/times/:eventID", (req, res) => {
+  knex.select('id').from('events').where('url', req.params.eventID).asCallback((err,result)=>{
+    if (err) {
+      throw err;
+    } else {
       knex.select('*').from('date').where('eventID', result[0].id).asCallback((err, result) => {
         if (err) {
-console.log("err 2")
           throw err;
         } else {
-console.log("test 3")
-          let templateVars = { dates: result };
+          let templateVars = { dates: result,
+                               eventURL: req.params.eventID
+                              };
           console.log(templateVars);
           res.render("times", templateVars);
         }
@@ -145,8 +170,10 @@ console.log("test 3")
   });
 });
 
-app.post("/events/:eventID/times", (req, res) => {
 
+
+
+app.post("/events/times/:eventID", (req, res) => {
   let results = req.body;
   for (let ids in results){
     for (let i = 0; i < results[ids].length; i++){
@@ -163,7 +190,8 @@ app.post("/events/:eventID/times", (req, res) => {
   res.send("ok");
 });
 
-app.post("/events/:eventID/:id/dates", (req, res) => {
+
+app.post("/events/dates/:eventID/:id", (req, res) => {
   let id = Number(req.params.id);
   console.log('params',req.params);
   // console.log('body',req.body)
@@ -177,7 +205,7 @@ app.post("/events/:eventID/:id/dates", (req, res) => {
     knex.batchInsert('date', rows)
         .then((result) => {
           console.log("test on the then")
-          res.redirect(`/events/${req.params.eventID}/times`);
+          res.redirect(`/events/times/${req.params.eventID}`);
           })
         .catch((err)=>{
           return console.error("Connection Error", err);
@@ -186,19 +214,18 @@ app.post("/events/:eventID/:id/dates", (req, res) => {
 });
 
 
-
-
-
-
-
-
-
-
-
-
 app.get("/events/:sharedurl", (req, res) => {
   res.render("option");
-
+});
+app.post("/newuser", (req, res) => {
+  let genCookie = generateRandomString();
+  req.session.cookie_id = genCookie;
+  knex('users').insert({
+    name: req.body.name,
+    email: req.body.email,
+    cookieid: genCookie
+  })
+  .then(x => res.redirect(`/events/vote/${req.body.sharedurl}`))
 });
 
 app.listen(PORT, () => {

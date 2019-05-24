@@ -20,17 +20,15 @@
 
 
 Pick a time
-  <form method = "POST" action="/event/:eventID/times">
+  <form method = "POST" action="/events/times/<%= eventURL %>">
     <% for(let element of dates){ %>
       <li><%= element.date %> <input class="form-control" type="text" name= <%= element.id %>>
                               <input class="form-control" type="text" name= <%= element.id %>>
-                              <button type="button" onclick="myFunction(element)">Add new time</button>
-  </li>
+                              <button type="button" onclick="myFunction(element)">Add new time</button></li>
     <% } %>
     <button type="submit" class="btn btn-primary">Back</button>
     <button type="submit" class="btn btn-primary">continue</button>
   </form>
-
 
 
 
