@@ -75,7 +75,9 @@ app.post("/newevent", (req, res) => {
 
 
 
+
 app.get("/events/:eventID/url", (req, res) => {
+
   res.render("url");
 });
 
@@ -96,6 +98,8 @@ app.get("/events/:sharedurl", (req, res) => {
       res.render('option', templatevars);
     });
   });
+});
+
 
 
 
@@ -120,6 +124,7 @@ app.get("/events/:eventID/dates", (req, res) => {
 app.get("/events/:eventID/times", (req, res) => {
   console.log(req.params)
   knex.select('*').from('date').where('eventID', 2).asCallback((err, result) => {
+
     if (err) {
       throw err;
     } else {
@@ -131,6 +136,7 @@ app.get("/events/:eventID/times", (req, res) => {
 });
 
 app.post("/events/:eventID/times", (req, res) => {
+
   let results = req.body;
   for (let ids in results){
     for (let i = 0; i < results[ids].length; i++){
@@ -148,6 +154,7 @@ app.post("/events/:eventID/times", (req, res) => {
 });
 
 app.post("/events/:eventID/dates", (req, res) => {
+
   console.log(req.body);
   for (let id in req.body){
     for (let element of req.body[id].split(",")){
@@ -171,8 +178,15 @@ app.post("/events/:eventID/dates", (req, res) => {
 
 
 
+
+
+
+
+
+
 app.get("/events/:sharedurl", (req, res) => {
   res.render("option");
+
 });
 
 app.listen(PORT, () => {
