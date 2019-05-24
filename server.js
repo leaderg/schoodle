@@ -68,8 +68,23 @@ app.post("/newevent", (req, res) => {
         return console.error("Connection Error", err);
       }
       console.dir(result);
-      res.redirect(`${result[0]}/times`);
+      res.redirect(`/events/${result[0]}/dates`);
     });
+  });
+});
+
+app.get("/events/:eventID/dates", (req, res) => {
+  console.log(req.params)
+  let templateVars = {};
+  templateVars.event_id = req.params.eventID;
+  knex.select('id').from('events').where('url', req.params.eventID).asCallback((err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      templateVars.id = result;
+      console.log(templateVars);
+      res.render("dates", templateVars);
+    }
   });
 });
 
@@ -99,11 +114,13 @@ app.get("/events/:sharedurl", (req, res) => {
 
 
 app.get("/events/:eventID/time", (req, res) => {
+  let templateVars = {};
+  templateVars.event_id = req.params.eventID;
   knex.select('*').from('date').where('id', '<', 5).asCallback((err, result) => {
     if (err) {
       throw err;
     } else {
-      let templateVars = { dates: result };
+      templateVars.dates = result;
       console.log(templateVars);
       res.render("times", templateVars);
     }
@@ -139,7 +156,7 @@ app.post("/events/:eventID/dates", (req, res) => {
       }
     });
   }
-  res.redirect(`/${req.param.eventID}/time`);
+  res.redirect(`/events/${req.param.eventID}/time`);
 });
 
 });
