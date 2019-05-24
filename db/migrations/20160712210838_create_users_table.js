@@ -19,7 +19,7 @@ exports.up = function(knex, Promise) {
   })
     .createTable('date', function (table) {
     table.increments('id');
-    table.biginteger('eventsID').references('id').inTable('events');
+    table.biginteger('eventID').references('id').inTable('events');
     table.string('date');
   })
     .createTable('time', function (table) {

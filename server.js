@@ -68,22 +68,12 @@ app.post("/newevent", (req, res) => {
         return console.error("Connection Error", err);
       }
       console.dir(result);
-      res.redirect(`${result[0]}/times`);
+      res.redirect(`${result[0]}/dates`);
     });
   });
 });
 
 
-app.get("/:eventID/dates", (req, res) => {
-  res.render("dates");
-});
-
-
-
-app.get("/:eventID/times", (req, res) => {
-  res.render("times");
-
-});
 
 app.get("/:eventID/url", (req, res) => {
   res.render("url");
@@ -100,9 +90,20 @@ app.get("/:eventID/url", (req, res) => {
 
 
 
+app.get("/:eventID/dates", (req, res) => {
+  console.log(req.params)
+  knex.select('id').from('events').where('url', req.params.eventID).asCallback((err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      let templateVars = { id: result };
+      console.log(templateVars);
+      res.render("dates", templateVars);
+    }
+  });
+});
 
-
-app.get("/time", (req, res) => {
+app.get("/:eventID/times", (req, res) => {
   knex.select('*').from('date').where('id', '<', 5).asCallback((err, result) => {
     if (err) {
       throw err;
@@ -134,18 +135,22 @@ app.post("/:eventID/times", (req, res) => {
 });
 
 app.post("/:eventID/dates", (req, res) => {
-  // console.log("receiving request")
   console.log(req.body);
-  for (let element of req.body.date.split(",")){
-    knex('date').insert({
-        date: element
-      }).asCallback((err, result) => {
-       if (err) {
-        return console.error("Connection Error", err);
-      }
-    });
+  for (let id in req.body){
+    for (let element of req.body[id].split(",")){
+      console.log('id', id, 'date', element)
+      knex('date').insert({
+          eventID: id,
+          date: element
+        }).asCallback((err, result) => {
+         if (err) {
+          return console.error("Connection Error", err);
+        }
+      });
+    }
   }
-  res.redirect(`/${req.param.eventID}/time`);
+
+  res.redirect(`/${req.params.eventID}/times`);
 });
 
 
