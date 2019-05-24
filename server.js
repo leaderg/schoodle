@@ -74,31 +74,27 @@ app.post("/newevent", (req, res) => {
 });
 
 
-app.get("/:eventID/dates", (req, res) => {
-  res.render("dates");
-});
-
-
-
-app.get("/:eventID/times", (req, res) => {
-  res.render("times");
-
-});
-
-app.get("/:eventID/url", (req, res) => {
+app.get("/url/:eventID", (req, res) => {
   res.render("url");
 });
 
-
-
-
-
-
-
-
-
-
-
+app.get("/events/:sharedurl", (req, res) => {
+  let templatevars = {};
+  let targetEvent = req.params.sharedurl;
+  knex('events').where({url: targetEvent})
+  .then( x => {
+    templatevars.eventTitle = x[0].title;
+    templatevars.eventDescription = x[0].description;
+    templatevars.eventLocation = x[0].location;
+    return x[0].id;
+  })
+  .then( y => {
+    knex('options').where({events_id: y}).then( output => {
+      templatevars.datedata = output;
+      console.log(templatevars);
+      res.render('option', templatevars);
+    });
+  });
 
 
 
@@ -146,18 +142,6 @@ app.post("/:eventID/dates", (req, res) => {
   res.redirect(`/${req.param.eventID}/time`);
 });
 
-
-
-
-
-
-
-
-
-
-
-app.get("/:sharedurl", (req, res) => {
-  res.render("option");
 });
 
 app.listen(PORT, () => {
@@ -167,12 +151,12 @@ app.listen(PORT, () => {
 
 
 function generateRandomString() {
-   let result           = '';
-   let characters       = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-   let charactersLength = characters.length;
-   for ( let i = 0; i < 6; i++ ) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-   };
-   return result;
+  let result           = '';
+  let characters       = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  let charactersLength = characters.length;
+  for ( let i = 0; i < 6; i++ ) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  };
+ return result;
 };
 

@@ -13,6 +13,18 @@
 
   <body>
     <h1>Welcome to Schoodle</h1>
-      <h3>option page</h3>
+    <h3>Lets figure out the options!</h3>
+    Event: </br>
+    <%= eventTitle%> </br></br>
+    Description </br>
+    <%= eventDescription%></br></br>
+    Where: </br>
+    <%= eventLocation%></br></br>
+
+    Potential Times: </br>
+    <%datedata.forEach(element => {%>
+    Date: <%=element.start_date%> at <%=element.start_time%> </br>
+    <%});%>
+
   </body>
 </html>
