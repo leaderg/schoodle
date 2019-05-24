@@ -74,16 +74,31 @@ app.post("/newevent", (req, res) => {
 });
 
 
-app.get("/:eventID/times", (req, res) => {
+app.get("/times/:eventID", (req, res) => {
   res.render("times");
 });
 
-app.get("/:eventID/url", (req, res) => {
+app.get("/url/:eventID", (req, res) => {
   res.render("url");
 });
 
-app.get("/:sharedurl", (req, res) => {
-  res.render("option");
+app.get("/events/:sharedurl", (req, res) => {
+  let templatevars = {};
+  let targetEvent = req.params.sharedurl;
+  knex('events').where({url: targetEvent})
+  .then( x => {
+    templatevars.eventTitle = x[0].title;
+    templatevars.eventDescription = x[0].description;
+    templatevars.eventLocation = x[0].location;
+    return x[0].id;
+  })
+  .then( y => {
+    knex('options').where({events_id: y}).then( output => {
+      templatevars.datedata = output;
+      console.log(templatevars);
+      res.render('option', templatevars);
+    });
+  });
 });
 
 app.listen(PORT, () => {
