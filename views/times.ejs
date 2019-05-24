@@ -22,7 +22,9 @@
 </section>
 
 timeeeeeeeeeeeeeeeeeeeeee
+
 <form method = "POST" action="/events/times/<%=eventURL%>">
+
   <% for(let element of dates){ %>
     <li><%= element.date %> <input class="form-control" type="text" name=<%= element.id %>> <input class="form-control" type="text" name=<%= element.id %>></li>
   <% } %>
