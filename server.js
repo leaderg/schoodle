@@ -68,7 +68,7 @@ app.post("/newevent", (req, res) => {
         return console.error("Connection Error", err);
       }
       console.dir(result);
-      res.redirect(`${result[0]}/dates`);
+      res.redirect(`events/${result[0]}/dates`);
     });
   });
 });
@@ -114,23 +114,33 @@ app.get("/events/:eventID/dates", (req, res) => {
     if (err) {
       throw err;
     } else {
-      let templateVars = { id: result };
-      console.log(templateVars);
+      let templateVars = { id: result,
+                           url: req.params.eventID };
+      console.log("templateVars",templateVars);
       res.render("dates", templateVars);
     }
   });
 });
 
 app.get("/events/:eventID/times", (req, res) => {
-  console.log(req.params)
-  knex.select('*').from('date').where('eventID', 2).asCallback((err, result) => {
-
+console.log("test 1");
+  knex.select('id').from('events').where('url', req.params.eventID).asCallback((err,result)=>{
     if (err) {
+console.log("err")
       throw err;
     } else {
-      let templateVars = { dates: result };
-      console.log(templateVars);
-      res.render("times", templateVars);
+console.log("test 2", result[0].id)
+      knex.select('*').from('date').where('eventID', result[0].id).asCallback((err, result) => {
+        if (err) {
+console.log("err 2")
+          throw err;
+        } else {
+console.log("test 3")
+          let templateVars = { dates: result };
+          console.log(templateVars);
+          res.render("times", templateVars);
+        }
+      });
     }
   });
 });
@@ -153,24 +163,26 @@ app.post("/events/:eventID/times", (req, res) => {
   res.send("ok");
 });
 
-app.post("/events/:eventID/dates", (req, res) => {
+app.post("/events/:eventID/:id/dates", (req, res) => {
+  let id = Number(req.params.id);
+  console.log('params',req.params);
+  // console.log('body',req.body)
+  console.log(id,typeof(id))
 
-  console.log(req.body);
-  for (let id in req.body){
-    for (let element of req.body[id].split(",")){
-      console.log('id', id, 'date', element)
-      knex('date').insert({
-          eventID: id,
-          date: element
-        }).asCallback((err, result) => {
-         if (err) {
+  for (let element of req.body[id].split(",")){
+    let rows = [{
+                  eventID: id,
+                  date: element
+                }];
+    knex.batchInsert('date', rows)
+        .then((result) => {
+          console.log("test on the then")
+          res.redirect(`/events/${req.params.eventID}/times`);
+          })
+        .catch((err)=>{
           return console.error("Connection Error", err);
-        }
-      });
-    }
+        });
   }
-
-  res.redirect(`/${req.params.eventID}/times`);
 });
 
 

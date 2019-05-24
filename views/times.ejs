@@ -20,7 +20,7 @@
 
 
 Pick a time
-  <form method = "POST" action="/:eventID/times">
+  <form method = "POST" action="/event/:eventID/times">
     <% for(let element of dates){ %>
       <li><%= element.date %> <input class="form-control" type="text" name= <%= element.id %>>
                               <input class="form-control" type="text" name= <%= element.id %>>
@@ -32,13 +32,6 @@ Pick a time
   </form>
 
 
-   <script>
-    function myFunction(element) {
-      var extra = document.createElement("input");
-      document.body.appendChild(extra);
-      extra.setAttribute('placeholder', <%= element.date %>);
-    }
-    </script>
 
 
 

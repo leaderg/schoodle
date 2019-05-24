@@ -24,7 +24,7 @@
 
 
     <div class="container">
-      <form method = "POST" action="/:eventID/dates">
+      <form method = "POST" action="/events/<%= url %>/<%= id[0].id %>/dates">
         <h3>Bootstrap Multi Select Date Picker</h3>
         pick the date
         <input type="text" class="form-control date" name = <%= id[0].id %> placeholder="Pick the date">
