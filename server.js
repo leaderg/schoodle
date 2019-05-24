@@ -57,9 +57,12 @@ app.get("/newevent", (req, res) => {
 
 app.post("/newevent", (req, res) => {
   console.log("receiving request")
+  let genCookie = generateRandomString();
+  req.session.cookie_id = genCookie;
   knex('users').insert({
     name: req.body.name,
-    email: req.body.email
+    email: req.body.email,
+    cookieid: genCookie
   }, 'id').asCallback((err, result) => {
     console.log(result);
     if (err) {
@@ -75,8 +78,8 @@ app.post("/newevent", (req, res) => {
       if (err) {
         return console.error("Connection Error", err);
       }
-      console.dir(result);
-      res.redirect(`${result[0]}/times`);
+      console.log(req.session.cookie_id);
+      res.redirect(`/events/${result}/dates`);
     });
   });
 });
