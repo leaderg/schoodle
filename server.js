@@ -78,7 +78,6 @@ app.get("/url/:eventID", (req, res) => {
   res.render("url");
 });
 
-<<<<<<< HEAD
 app.get("/events/:sharedurl", (req, res) => {
   let templatevars = {};
   let targetEvent = req.params.sharedurl;
