@@ -4,10 +4,7 @@ exports.up = function(knex, Promise) {
     table.increments('id');
     table.string('name');
     table.string('email');
-  })
-  .createTable('cookies', function (table) {
-    table.integer('cookieid');
-    table.biginteger('usersID').references('id').inTable('users');
+    table.string('cookieid', [500]);
   })
   .createTable('events', function (table) {
     table.increments('id');
@@ -37,5 +34,6 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTable('time').dropTable('date').dropTable('options').dropTable('events').dropTable('cookies').dropTable('users');
+  return knex.schema.dropTable('time').dropTable('date').dropTable('options').dropTable('events').dropTable('users');
+  //.dropTable('cookies')
 };
