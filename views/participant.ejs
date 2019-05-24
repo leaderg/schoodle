@@ -16,9 +16,10 @@
     <h3>Your Friend wants you to come to an event</h3>
     <p>We need some information so that you can help decide the times!</p>
 
-    <form action="">
+    <form action="/newuser" method="POST">
         <input class="form-control" type="text" name="name" placeholder="Your Name" style="width: 300px">
         <input class="form-control" type="text" name="email" placeholder="Your Email" style="width: 300px">
+        <input type="hidden" name="sharedurl" value="<%=sharedurl%>">
         <button type="submit">Get Started</button>
     </form>
 

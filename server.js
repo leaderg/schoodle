@@ -79,7 +79,7 @@ app.post("/newevent", (req, res) => {
         return console.error("Connection Error", err);
       }
       // console.log(req.session.cookie_id);
-      res.redirect(`/events/${result}/dates`);
+      res.redirect(`/events/dates/${result}`);
     });
   });
 });
@@ -90,13 +90,16 @@ app.get("/events/url/:eventID", (req, res) => {
 
 });
 
-app.get("/events/:eventID/dates", (req, res) => {
+app.get("/events/dates/:eventID", (req, res) => {
   console.log(req.params)
   knex.select('id').from('events').where('url', req.params.eventID).asCallback((err, result) => {
     if (err) {
       throw err;
     } else {
-      let templateVars = { id: result };
+      let templateVars = {
+        id: result,
+        eventURL: req.params.eventID
+       };
       console.log(templateVars);
       res.render("dates", templateVars);
     }
@@ -105,7 +108,9 @@ app.get("/events/:eventID/dates", (req, res) => {
 
 app.get("/events/vote/:sharedurl", (req, res) => {
   if (!req.session.cookie_id){
-    res.render("participant");
+    let templatevars = {};
+    templatevars.sharedurl = req.params.sharedurl;
+    res.render("participant", templatevars);
   } else {
     let templatevars = {};
     let targetEvent = req.params.sharedurl;
@@ -128,12 +133,14 @@ app.get("/events/vote/:sharedurl", (req, res) => {
 
 
 
-app.get("/events/:eventID/time", (req, res) => {
+app.get("/events/times/:eventID", (req, res) => {
   knex.select('*').from('date').where('id', '<', 5).asCallback((err, result) => {
     if (err) {
       throw err;
     } else {
-      let templateVars = { dates: result };
+      let templateVars = {
+        dates: result,
+        eventURL: req.params.eventID };
       console.log(templateVars);
       res.render("times", templateVars);
     }
@@ -142,7 +149,7 @@ app.get("/events/:eventID/time", (req, res) => {
 
 
 
-app.post("/events/:eventID/times", (req, res) => {
+app.post("/events/times/:eventID", (req, res) => {
   let results = req.body;
   for (let ids in results){
     for (let i = 0; i < results[ids].length; i++){
@@ -159,9 +166,18 @@ app.post("/events/:eventID/times", (req, res) => {
   res.send("ok");
 });
 
+app.post("/newuser", (req, res) => {
+  let genCookie = generateRandomString();
+  req.session.cookie_id = genCookie;
+  knex('users').insert({
+    name: req.body.name,
+    email: req.body.email,
+    cookieid: genCookie
+  })
+  .then(x => res.redirect(`/events/vote/${req.body.sharedurl}`))
+});
 
-
-app.post("/events/:eventID/dates", (req, res) => {
+app.post("/events/dates/:eventID", (req, res) => {
   // console.log("")
   console.log(req.body);
   for (let element of req.body.date.split(",")){
@@ -173,7 +189,7 @@ app.post("/events/:eventID/dates", (req, res) => {
       }
     });
   }
-  res.redirect(`/${req.param.eventID}/time`);
+  res.redirect(`/events/times/${req.param.eventID}`);
 });
 
 
