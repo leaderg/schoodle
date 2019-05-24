@@ -74,7 +74,7 @@ app.post("/newevent", (req, res) => {
 });
 
 
-app.get("/url/:eventID", (req, res) => {
+app.get("/events/url/:eventID", (req, res) => {
   res.render("url");
 });
 
@@ -98,7 +98,7 @@ app.get("/events/:sharedurl", (req, res) => {
 
 
 
-app.get("/time", (req, res) => {
+app.get("/events/:eventID/time", (req, res) => {
   knex.select('*').from('date').where('id', '<', 5).asCallback((err, result) => {
     if (err) {
       throw err;
@@ -110,7 +110,7 @@ app.get("/time", (req, res) => {
   });
 });
 
-app.post("/:eventID/times", (req, res) => {
+app.post("/events/:eventID/times", (req, res) => {
   let results = req.body;
   for (let ids in results){
     for (let i = 0; i < results[ids].length; i++){
@@ -127,7 +127,7 @@ app.post("/:eventID/times", (req, res) => {
   res.send("ok");
 });
 
-app.post("/:eventID/dates", (req, res) => {
+app.post("/events/:eventID/dates", (req, res) => {
   // console.log("receiving request")
   console.log(req.body);
   for (let element of req.body.date.split(",")){
