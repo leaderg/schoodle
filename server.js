@@ -166,9 +166,9 @@ app.get("/events/dates/:eventID", (req, res) => {
       throw err;
     } else {
       let templateVars = {
-                          id: result,
-                          eventURL: req.params.eventID
-                         };
+        id: result,
+        eventURL: req.params.eventID
+      };
       console.log(templateVars);
       res.render("dates", templateVars);
     }
@@ -190,9 +190,10 @@ console.log('err2')
           throw err;
         } else {
 console.log('test2')
-          let templateVars = { dates: result,
-                               eventURL: req.params.eventID
-                              };
+          let templateVars = {
+            dates: result,
+            eventURL: req.params.eventID
+          };
           console.log(templateVars);
           res.render("times", templateVars);
         }
@@ -255,12 +256,24 @@ app.get("/events/:sharedurl", (req, res) => {
 app.post("/newuser", (req, res) => {
   let genCookie = generateRandomString();
   req.session.cookie_id = genCookie;
-  knex('users').insert({
-    name: req.body.name,
-    email: req.body.email,
-    cookieid: genCookie
+  let scopeUserId;
+  let scopeEventId;
+  knex('events').select('events_id').where('url', req.body.sharedurl)
+    .then(result => {
+      scopeEventId = result[0].events_id;
+      knex('users').insert({
+        name: req.body.name,
+        email: req.body.email,
+        cookieid: genCookie
+        }, "id")
+    .then(output => {
+      knex('participants').insert({
+        users_id: Number(output[0]),
+        events_id: scopeEventId
+      })
+    .then(x => res.redirect(`/events/vote/${req.body.sharedurl}`))
+    })
   })
-  .then(x => res.redirect(`/events/vote/${req.body.sharedurl}`))
 });
 
 
