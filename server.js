@@ -77,9 +77,9 @@ app.post("/newevent", (req, res) => {
         title: req.body.title,
         description: req.body.description,
         location: req.body.location,
-        creatorID: result[0],
+        users_id: result[0],
         url: eventSerial
-      }, "id")
+      }, "events_id")
       .asCallback((err, output) => {
         if (err) {
           return console.error("Connection Error", err);
@@ -126,7 +126,7 @@ app.get("/events/vote/:sharedurl", (req, res) => {
       templatevars.eventTitle = x[0].title;
       templatevars.eventDescription = x[0].description;
       templatevars.eventLocation = x[0].location;
-      return x[0].id;
+      return x[0].events_id;
     })
     .then( y => {
       knex('options').where({events_id: y}).then( output => {
@@ -251,6 +251,7 @@ console.log("test on the then")
 app.get("/events/:sharedurl", (req, res) => {
   res.render("option");
 });
+
 app.post("/newuser", (req, res) => {
   let genCookie = generateRandomString();
   req.session.cookie_id = genCookie;
@@ -266,7 +267,7 @@ app.post("/newuser", (req, res) => {
 //Testing Route////////////////
 ///////////////////////////////
 app.get("/testing", (req, res) => {
-  buildObjectFromURL('0e1Yje', function(output) {
+  buildObjectFromURL('4ASIg9', function(output) {
     res.json(output);
   });
 

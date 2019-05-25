@@ -34,11 +34,11 @@ exports.up = function(knex, Promise) {
   .createTable('participants', function (table) {
     table.increments('id');
     table.biginteger('users_id').references('id').inTable('users');
-    table.biginteger('events_id').references('id').inTable('events');
+    table.biginteger('events_id').references('events_id').inTable('events');
   });
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTable('cookies').dropTable('time').dropTable('date').dropTable('options').dropTable('events').dropTable('users');
+  return knex.schema.dropTable('time').dropTable('date').dropTable('options').dropTable('events').dropTable('users');
 // .dropTable('participants')
 };
