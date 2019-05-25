@@ -23,8 +23,8 @@
   <form method = "POST" action="/events/times/<%= eventURL %>">
     <% for(let element of dates){ %>
         <li><%= element.date %></li>
-        <li><input class="form-control" type="text" name= <%= element.id %>></li>
-        <li id=<%= element.id %> ><input class="form-control" type="text" name= <%= element.id %>></li>
+        <li id=<%= element.id %> ><input class="form-control" type="text" name= <%= element.id %>>
+                                  <input class="form-control" type="text" name= <%= element.id %>></li>
         <li><button type="button" onclick="myFunction('<%= element.id %>')">Add new time</button></li>
     <% } %>
     <button type="submit" class="btn btn-primary">Back</button>

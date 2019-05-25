@@ -72,7 +72,7 @@ app.post("/newevent", (req, res) => {
       title: req.body.title,
       description: req.body.description,
       location: req.body.location,
-      creatorID: result[0],
+      users_id: result[0],
       url: generateRandomString()
     }, 'url').asCallback((err, result) => {
       if (err) {
@@ -85,7 +85,7 @@ app.post("/newevent", (req, res) => {
 
 app.get("/events/dates/:eventID", (req, res) => {
   console.log(req.params)
-  knex.select('id').from('events').where('url', req.params.eventID).asCallback((err, result) => {
+  knex.select('events_id').from('events').where('url', req.params.eventID).asCallback((err, result) => {
     if (err) {
       throw err;
     } else {
@@ -96,17 +96,70 @@ app.get("/events/dates/:eventID", (req, res) => {
     }
   });
 });
-
+///////////////////////////////////////////
+app.get("/events/vote/:sharedurl", (req, res) => {
+  if (!req.session.cookie_id){
+    let templatevars = {};
+    templatevars.sharedurl = req.params.sharedurl;
+    res.render("participant", templatevars);
+  } else {
+    let templatevars = {};
+    let targetEvent = req.params.sharedurl;
+    knex.select('title','description', 'location', 'date', 'start_time').from('date')
+        .leftOuterJoin('time', 'date.id', 'dateID')
+        .leftOuterJoin('events', 'events.id', 'eventID')
+        .where('events.id', '=', 1)
+    // knex('events').where({url: targetEvent})
+    .then( x => {
+      templatevars.eventTitle = x[0].title;
+      templatevars.eventDescription = x[0].description;
+      templatevars.eventLocation = x[0].location;
+      let dateTime = [];
+      for (let element of x){
+        dateTime.push(element.date + " " + element.start_time);
+      }
+      templatevars.eventTime = dateTime;
+console.log('dateTime', dateTime);
+console.log('templatevars', templatevars)
+      return x[0].id;
+    })
+    .then( y => {
+      knex('options').where({events_id: y}).then( output => {
+        templatevars.datedata = output;
+        console.log(templatevars);
+        res.render('option', templatevars);
+      });
+    });
+  }
+});
+////////////////////////////////////////////////
 
 
 
 app.get("/events/url/:eventID", (req, res) => {
-  res.render("url");
+console.log('urltest1')
+  let templatevars = {};
+  let targetEvent = req.params.eventID;
+  knex.select('users_id', 'events.events_id', 'date', 'start_time').from('date')
+      .leftOuterJoin('time', 'date.id', 'dateID')
+      .leftOuterJoin('events', 'events_id', 'eventID')
+      .where('events.url', '=', targetEvent)
+  .then( x => {
+  let rows = x;
+  knex.batchInsert('options', rows)
+      .then((result) => {
+        res.render("url");
+        })
+      .catch((err)=>{
+        return console.error("Connection Error", err);
+      });
+  });
 });
+
 
 app.get("/events/dates/:eventID", (req, res) => {
   console.log(req.params)
-  knex.select('id').from('events').where('url', req.params.eventID).asCallback((err, result) => {
+  knex.select('events_id').from('events').where('url', req.params.eventID).asCallback((err, result) => {
     if (err) {
       throw err;
     } else {
@@ -151,14 +204,19 @@ app.get("/events/vote/:sharedurl", (req, res) => {
 
 
 app.get("/events/times/:eventID", (req, res) => {
-  knex.select('id').from('events').where('url', req.params.eventID).asCallback((err,result)=>{
+  knex.select('events_id').from('events').where('url', req.params.eventID).asCallback((err,result)=>{
+console.log(result)
     if (err) {
+console.log("err1")
       throw err;
     } else {
-      knex.select('*').from('date').where('eventID', result[0].id).asCallback((err, result) => {
+console.log('test1')
+      knex.select('*').from('date').where('eventID', result[0].events_id).asCallback((err, result) => {
         if (err) {
+console.log('err2')
           throw err;
         } else {
+console.log('test2')
           let templateVars = { dates: result,
                                eventURL: req.params.eventID
                               };
@@ -178,25 +236,27 @@ app.post("/events/times/:eventID", (req, res) => {
   console.log(results);
   for (let ids in results){
     for (let i = 0; i < results[ids].length; i++){
+console.log('test1')
       knex('time').insert({
-        dateID : ids,
-        start_time: results[ids][i]
-      }).asCallback((err, result) => {
+                            dateID : ids,
+                            start_time: results[ids][i]
+                          }).asCallback((err, result) => {
         if(err){
+console.log('err1')
           throw err;
         }
       });
     }
   }
-  res.send("ok");
+  res.redirect(`/events/url/${req.params.eventID}`);
 });
 
 
 app.post("/events/dates/:eventID/:id", (req, res) => {
   let id = Number(req.params.id);
-  console.log('params',req.params);
-  // console.log('body',req.body)
-  console.log(id,typeof(id))
+console.log('params',req.params);
+console.log(id,typeof(id));
+console.log('body', req.body)
 
   for (let element of req.body[id].split(",")){
     let rows = [{
@@ -205,13 +265,13 @@ app.post("/events/dates/:eventID/:id", (req, res) => {
                 }];
     knex.batchInsert('date', rows)
         .then((result) => {
-          console.log("test on the then")
+console.log("test on the then")
           res.redirect(`/events/times/${req.params.eventID}`);
           })
         .catch((err)=>{
           return console.error("Connection Error", err);
         });
-  }
+    }
 });
 
 
