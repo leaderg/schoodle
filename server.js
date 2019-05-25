@@ -228,9 +228,24 @@ app.post("/newuser", (req, res) => {
   .then(x => res.redirect(`/events/vote/${req.body.sharedurl}`))
 });
 
+
+//Testing Route////////////////
+///////////////////////////////
+app.get("/testing", (req, res) => {
+  buildObjectFromURL('7EQVB0', function(output) {
+    res.json(output);
+  });
+
+});
+//
+///////////////////////////////
+///////////////////////////////
+
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
 });
+
+
 
 
 
@@ -244,3 +259,18 @@ function generateRandomString() {
  return result;
 };
 
+function buildObjectFromURL(url, cb) {
+  let jsonReply = {};
+  knex.select('*').from('events').where('url', url)
+  .then((result) => {
+      jsonReply.event = result[0];
+      console.log(result[0].id);
+    return result[0].id;
+    })
+  .then((eventID) => {
+    knex.select('*').from('options').where('events_id', eventID).then((optionList) => {
+      jsonReply.options = optionList;
+      cb(jsonReply)
+    })
+  });
+}
