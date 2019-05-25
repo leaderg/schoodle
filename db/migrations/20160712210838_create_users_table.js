@@ -7,16 +7,16 @@ exports.up = function(knex, Promise) {
     table.string('cookieid', [500]);
   })
   .createTable('events', function (table) {
-    table.increments('id');
+    table.increments('events_id');
     table.string('title');
     table.string('description', [500]);
     table.string('location');
     table.string('url');
-    table.biginteger('creatorID').references('id').inTable('users');
+    table.biginteger('users_id').references('id').inTable('users');
   })
     .createTable('date', function (table) {
     table.increments('id');
-    table.biginteger('eventID').references('id').inTable('events');
+    table.biginteger('eventID').references('events_id').inTable('events');
     table.string('date');
   })
     .createTable('time', function (table) {
@@ -27,8 +27,8 @@ exports.up = function(knex, Promise) {
   .createTable('options', function (table) {
     table.increments('id');
     table.biginteger('users_id').references('id').inTable('users');
-    table.biginteger('events_id').references('id').inTable('events');
-    table.string('start_date');
+    table.biginteger('events_id').references('events_id').inTable('events');
+    table.string('date');
     table.string('start_time');
   })
   .createTable('participants', function (table) {

@@ -25,11 +25,11 @@
 
     <div class="container">
 
-      <form method = "POST" action="/events/dates/<%= url %>/<%= id[0].id %>">
+      <form method = "POST" action="/events/dates/<%= url %>/<%= id[0].events_id %>">
 
         <h3>Bootstrap Multi Select Date Picker</h3>
         pick the date
-        <input type="text" class="form-control date" name = <%= id[0].id %> placeholder="Pick the date">
+        <input type="text" class="form-control date" placeholder="Pick the date" name = <%= id[0].events_id %>>
       <button type="submit" class="btn btn-primary">Back</button>
       <button type="submit" class="btn btn-primary">continue</button>
      </form>
