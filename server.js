@@ -175,6 +175,7 @@ app.get("/events/times/:eventID", (req, res) => {
 
 app.post("/events/times/:eventID", (req, res) => {
   let results = req.body;
+  console.log(results);
   for (let ids in results){
     for (let i = 0; i < results[ids].length; i++){
       knex('time').insert({

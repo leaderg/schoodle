@@ -18,26 +18,26 @@
   <body>
     <h1>Welcome to Schoodle</h1>
 
+    <h3>Pick a time</h3>
 
-Pick a time
   <form method = "POST" action="/events/times/<%= eventURL %>">
     <% for(let element of dates){ %>
-      <li><%= element.date %> <input class="form-control" type="text" name= <%= element.id %>>
-                              <input class="form-control" type="text" name= <%= element.id %>>
-                              <button type="button" onclick="myFunction(element)">Add new time</button></li>
+        <li><%= element.date %></li>
+        <li><input class="form-control" type="text" name= <%= element.id %>></li>
+        <li id=<%= element.id %> ><input class="form-control" type="text" name= <%= element.id %>></li>
+        <li><button type="button" onclick="myFunction('<%= element.id %>')">Add new time</button></li>
     <% } %>
     <button type="submit" class="btn btn-primary">Back</button>
     <button type="submit" class="btn btn-primary">continue</button>
   </form>
 
 
-
-
-
-
-
-
-
-
+   <script>
+    function myFunction(data) {
+      var newInput = document.createElement("input");
+      document.getElementById(data).appendChild(newInput);
+      newInput.setAttribute('name', data);
+    }
+    </script>
   </body>
 </html>
