@@ -56,30 +56,47 @@ app.get("/newevent", (req, res) => {
 });
 
 app.post("/newevent", (req, res) => {
-  console.log("receiving request")
   let genCookie = generateRandomString();
+  let eventSerial = generateRandomString();
+  let scopeUserId;
+  let scopeEventId;
   req.session.cookie_id = genCookie;
-  knex('users').insert({
-    name: req.body.name,
-    email: req.body.email,
-    cookieid: genCookie
-  }, 'id').asCallback((err, result) => {
-    // console.log(result);
+  knex('users')
+    .insert({
+      name: req.body.name,
+      email: req.body.email,
+      cookieid: genCookie
+    }, 'id')
+    .asCallback((err, result) => {
     if (err) {
       return console.error("Connection Error", err);
     }
-    knex('events').insert({
-      title: req.body.title,
-      description: req.body.description,
-      location: req.body.location,
-      creatorID: result[0],
-      url: generateRandomString()
-    }, 'url').asCallback((err, result) => {
-      if (err) {
-        return console.error("Connection Error", err);
-      }
-      res.redirect(`/events/dates/${result}`);
-    });
+    scopeUserId = Number(result[0]);
+    knex('events')
+      .insert({
+        title: req.body.title,
+        description: req.body.description,
+        location: req.body.location,
+        creatorID: result[0],
+        url: eventSerial
+      }, "id")
+      .asCallback((err, output) => {
+        if (err) {
+          return console.error("Connection Error", err);
+        }
+        console.log(`
+          output: ${output}
+          output[0]: ${output[0]}
+          Number(output[0]): ${Number(output[0])}`)
+        knex('participants')
+        .insert({
+          users_id: scopeUserId,
+          events_id: Number(output[0])
+        })
+        .then(x => {
+          res.redirect(`/events/dates/${eventSerial}`);
+        });
+      });
   });
 });
 
@@ -96,8 +113,6 @@ app.get("/events/dates/:eventID", (req, res) => {
     }
   });
 });
-
-
 
 
 app.get("/events/url/:eventID", (req, res) => {
@@ -233,7 +248,7 @@ app.post("/newuser", (req, res) => {
 //Testing Route////////////////
 ///////////////////////////////
 app.get("/testing", (req, res) => {
-  buildObjectFromURL('7EQVB0', function(output) {
+  buildObjectFromURL('0e1Yje', function(output) {
     res.json(output);
   });
 
@@ -271,7 +286,15 @@ function buildObjectFromURL(url, cb) {
   .then((eventID) => {
     knex.select('*').from('options').where('events_id', eventID).then((optionList) => {
       jsonReply.options = optionList;
-      cb(jsonReply)
+      return eventID
     })
+  .then((eventID) => {
+    //this could be better using joins.
+    knex.select('*').from('participants').where('events_id', eventID).then((participantList) => {
+      jsonReply.participants = participantList;
+      cb(jsonReply);
+    })
+  })
+
   });
 }
