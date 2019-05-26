@@ -24,11 +24,16 @@
   font-weight: bold;
 }
 
-.btn {
+#contact {
   float: right;
   background-color: transparent;
   color: grey;
   font-size: 1.5em;
-  line-height: 65px;
+  line-height: 80px;
 }
 
+#contact:hover {
+  cursor: pointer;
+  color: black;
+  text-decoration: none;
+}

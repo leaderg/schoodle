@@ -1,7 +1,5 @@
 #date {
   font-size: 1.5em;
-
-
 }
 
 .time {
@@ -12,4 +10,8 @@
 .left {
   text-align: left;
   padding-inline-start:40px;
+}
+
+ul {
+  display: flex;
 }

@@ -3,6 +3,7 @@
   <head>
     <title>Home Page</title>
 
+
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
@@ -16,29 +17,38 @@
 
   <body>
 
-        <!-- Top nav bar (fixed) -->
-    <nav id="nav-bar">
-      <img class="logo" src="/images/logo.png">
-      <span class="header fixed">Schoodle</span>
-      <a class="btn"><i class="fas fa-paper-plane"></i> Contact us</a>
-    </nav>
+    <header>
+      <% include ./partials/_nav %>
+    </header>
 
 
     <main class="container">
 
       <h2>What’s the occasion?</h2>
+
         <form action="/newevent" method="POST">
           <h4> Title </h4>
-          <input class="form-control" type="text" name="title" style="width: 300px">
-          <h4> Description (optional) </h4>
-          <input class="form-control" type="text" name="description" style="width: 300px">
-          <h4> Location (optional) </h4>
-          <input class="form-control" type="text" name="location" style="width: 300px">
-          <h4> Your name </h4>
-          <input class="form-control" type="text" name="name" style="width: 300px">
-          <h4> Your E-mail address </h4>
-          <input class="form-control" type="text" name="email" style="width: 300px">
-          <ul><button id='a' type="submit" >Create Event</button></ul>
+          <a><i class="fas fa-feather fa-2x"></i>
+            <input class="form-control" type="text" name="title" placeholder="Title"style="width:30em; display: inline-block">
+          </a>
+          <h4> Description</h4>
+          <a><i class="fas fa-edit fa-2x"></i>
+            <input class="form-control" type="text" name="description" placeholder="Description (optional)"style="width:30em; display: inline-block">
+          </a>
+          <h4> Location</h4>
+          <a><i class="fas fa-map-pin fa-2x"></i>
+            <input class="form-control" type="text" name="location" placeholder="Location (optional)"style="width:30em; display: inline-block">
+          </a>
+          <h4> Name</h4>
+          <a><i class="fas fa-user fa-2x"></i>
+            <input class="form-control" type="text" name="name" placeholder="Name"style="width:30em; display: inline-block">
+          </a>
+          <h4> E-mail</h4>
+          <a><i class="fas fa-envelope-open-text fa-2x"></i>
+            <input class="form-control" type="text" name="email" placeholder="E-mail address"style="width:30em; display: inline-block">
+          </a>
+
+          <ul><button id='a' type="submit" class="btn btn-primary">Create Event</button></ul>
         </form>
 
       </main>

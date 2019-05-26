@@ -19,12 +19,9 @@
 
   <body>
 
-        <!-- Top nav bar (fixed) -->
-    <nav id="nav-bar">
-      <img class="logo" src="/images/logo.png">
-      <span class="header fixed">Schoodle</span>
-      <a class="btn"><i class="fas fa-paper-plane"></i> Contact us</a>
-    </nav>
+    <header>
+      <% include ./partials/_nav %>
+    </header>
 
 
 
@@ -35,9 +32,10 @@
   <form method = "POST" action="/events/times/<%= eventURL %>">
     <% for(let element of dates){ %>
         <ul id='date'><%= element.date %></ul>
-        <ul id=<%= element.id %> ><input class="time form-control" type="text" name= <%= element.id %>>
-                                  <input class="time form-control" type="text" name= <%= element.id %>></ul>
-        <ul><button type="button" onclick="myFunction('<%= element.id %>')">Add new time</button></ul>
+        <ul id=<%= element.id %>>
+          <input class="time form-control" type="text" name= <%= element.id %>>
+        </ul>
+        <button type="button" onclick="myFunction('<%= element.id %>')">Add new time</button>
     <% } %>
     <button type="submit" class="btn btn-primary">Back</button>
     <button type="submit" class="btn btn-primary">continue</button>

@@ -21,24 +21,33 @@
 
   <body>
 
-        <!-- Top nav bar (fixed) -->
-    <nav id="nav-bar">
-      <img class="logo" src="/images/logo.png">
-      <span class="header fixed">Schoodle</span>
-      <a class="btn"><i class="fas fa-paper-plane"></i> Contact us</a>
-    </nav>
+    <header>
+      <% include ./partials/_nav %>
+    </header>
 
 
     <h1>Welcome to Schoodle</h1>
 
     <div class="container">
 
-      <form method = "POST" action="/events/dates/<%= url %>/<%= id[0].events_id %>">
+      <form method="POST" action="/events/dates/<%= url %>/<%= id[0].events_id %>" onsubmit='inputCheck(event)' autocomplete="off">
+        <input hidden autocomplete="false">
 
         <h3>pick the date</h3>
         <ul><input id='b' type="text" class="form-control date" placeholder="Pick the date" name = <%= id[0].events_id %>></ul>
-      <ul><button id='a' type="submit" class="btn btn-primary">continue</button></ul>
+      <ul><button id='a' type="submit" class="btn btn-primary" >continue</button></ul>
      </form>
+
+      <script>
+        function inputCheck(event) {
+          let val= document.getElementById('b').value;
+          if (val == ''){
+            alert('no value');
+            event.preventDefault();
+            return false;
+          }
+        }
+      </script>
 
     </div>
 

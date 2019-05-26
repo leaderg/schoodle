@@ -30,16 +30,3 @@
 .next:active {
   box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
 }
-
-.container::after {
-  content: "";
-  background-image: url(../images/index_background.png);
-  opacity: 0.5;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  position: absolute;
-  z-index: -1;
-}
-

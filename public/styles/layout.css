@@ -1,6 +1,6 @@
 body {
   background-image: url(../images/events.png);
-  background-size: 1920px;
+  background-size: 2520px;
   padding-top: 7em;
 }
 
@@ -8,3 +8,27 @@ body h1, h2,h3,h4,h5,h6 {
   color: #244751;
   text-align: center;
 }
+
+button.btn-primary{
+  background-color: #62c767;
+  color: white;
+  font-size: 1.5em;
+  border-radius: 0.2em;
+  border: none;
+  margin-top: 0.3em;
+
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.btn-primary:hover {
+  background-color: #74e079;
+  color: white;
+  text-decoration: none;
+}
+
+.btn-primary:active {
+  box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+}
+
