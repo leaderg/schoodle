@@ -121,20 +121,7 @@ app.get("/events/vote/:sharedurl", (req, res) => {
   } else {
     let templatevars = {};
     let targetEvent = req.params.sharedurl;
-    knex('events').where({url: targetEvent})
-    .then( x => {
-      templatevars.eventTitle = x[0].title;
-      templatevars.eventDescription = x[0].description;
-      templatevars.eventLocation = x[0].location;
-      return x[0].events_id;
-    })
-    .then( y => {
-      knex('options').where({events_id: y}).then( output => {
-        templatevars.datedata = output;
-        console.log(templatevars);
-        res.render('option', templatevars);
-      });
-    });
+    res.render('option', templatevars);
   }
 });
 
@@ -280,7 +267,8 @@ app.post("/newuser", (req, res) => {
 //Testing Route////////////////
 ///////////////////////////////
 app.get("/testing", (req, res) => {
-  buildObjectFromURL('4ASIg9', function(output) {
+  console.log(`Receive JSON get request.`)
+  buildObjectFromURL('LLY24a', function(output) {
     res.json(output);
   });
 
@@ -312,8 +300,7 @@ function buildObjectFromURL(url, cb) {
   knex.select('*').from('events').where('url', url)
   .then((result) => {
       jsonReply.event = result[0];
-      console.log(result[0].id);
-    return result[0].id;
+    return result[0].events_id;
     })
   .then((eventID) => {
     knex.select('*').from('options').where('events_id', eventID).then((optionList) => {
@@ -322,11 +309,14 @@ function buildObjectFromURL(url, cb) {
     })
   .then((eventID) => {
     //this could be better using joins.
-    knex.select('*').from('participants').where('events_id', eventID).then((participantList) => {
+    knex('participants').where('events_id', eventID)
+    .join('users', 'users.id', 'participants.users_id')
+    .select('users.id','users.name')
+    .then((participantList) => {
       jsonReply.participants = participantList;
       cb(jsonReply);
     })
   })
 
-  });
+});
 }
