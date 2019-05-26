@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Home Page</title>
+    <title>Time</title>
 
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
@@ -27,7 +27,7 @@
 
     <h1>something here</h1>
 
-    <h3 class='left'>Pick a time</h3>
+    <h3 class='subtitle'>Pick a time</h3>
 
   <form method = "POST" action="/events/times/<%= eventURL %>">
     <% for(let element of dates){ %>
@@ -35,9 +35,10 @@
         <ul id=<%= element.id %>>
           <input class="time form-control" type="text" name= <%= element.id %>>
         </ul>
-        <button type="button" onclick="myFunction('<%= element.id %>')">Add new time</button>
+        <button id="add" type="button" onclick="myFunction('<%= element.id %>')">Add new time
+        </button>
     <% } %>
-    <button type="submit" class="btn btn-primary">Back</button>
+
     <button type="submit" class="btn btn-primary">continue</button>
   </form>
 

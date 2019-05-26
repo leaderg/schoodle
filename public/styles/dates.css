@@ -14,26 +14,7 @@ ul {
   transform: translate(-50%, 0);
 }
 
-#a {
-  background-color: #62c767;
-  color: white;
-  font-size: 1.5em;
-  border-radius: 0.2em;
-  border: none;
+.btn-primary {
   margin-top: 2.5em;
-  line-height: normal;
-
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0);
-}
-
-#a:hover {
-  background-color: #74e079;
-  color: white;
-  text-decoration: none;
-}
-
-#a:active {
-  box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+  width: 20%;
 }

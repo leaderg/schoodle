@@ -289,12 +289,12 @@
 .datepicker table tr td.active.disabled,
 .datepicker table tr td.active.disabled:hover {
   background-color: #006dcc;
-  background-image: -moz-linear-gradient(to bottom, #08c, #0044cc);
-  background-image: -ms-linear-gradient(to bottom, #08c, #0044cc);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08c), to(#0044cc));
-  background-image: -webkit-linear-gradient(to bottom, #08c, #0044cc);
-  background-image: -o-linear-gradient(to bottom, #08c, #0044cc);
-  background-image: linear-gradient(to bottom, #08c, #0044cc);
+  background-image: -moz-linear-gradient(to bottom, #7fe484, #57a55b);
+  background-image: -ms-linear-gradient(to bottom, #7fe484, #57a55b);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#7fe484), to(#57a55b));
+  background-image: -webkit-linear-gradient(to bottom, #7fe484, #57a55b);
+  background-image: -o-linear-gradient(to bottom, #7fe484, #57a55b);
+  background-image: linear-gradient(to bottom, #7fe484, #57a55b);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#08c', endColorstr='#0044cc', GradientType=0);
   border-color: #0044cc #0044cc #002a80;

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Home Page</title>
+    <title>Date</title>
 
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
@@ -26,7 +26,7 @@
     </header>
 
 
-    <h1>Welcome to Schoodle</h1>
+    <h1>something here</h1>
 
     <div class="container">
 
@@ -35,14 +35,14 @@
 
         <h3>pick the date</h3>
         <ul><input id='b' type="text" class="form-control date" placeholder="Pick the date" name = <%= id[0].events_id %>></ul>
-      <ul><button id='a' type="submit" class="btn btn-primary" >continue</button></ul>
+      <ul><button type="submit" class="btn btn-primary" >continue</button></ul>
      </form>
 
       <script>
         function inputCheck(event) {
           let val= document.getElementById('b').value;
           if (val == ''){
-            alert('no value');
+            alert('Please enter a date');
             event.preventDefault();
             return false;
           }
