@@ -8,23 +8,27 @@
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
 
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
-    <script type="text/javascript" src="/scripts/app.js"></script>
+    <script type="text/javascript" src="/scripts/voteTest.js"></script>
   </head>
 
   <body>
-    <h1>Welcome to Schoodle</h1>
-    <h3>Lets figure out the options!</h3>
-    Event: </br>
-    <%= eventTitle%> </br></br>
-    Description </br>
-    <%= eventDescription%></br></br>
-    Where: </br>
-    <%= eventLocation%></br></br>
+  <input id="viewingUser" type="hidden" class="<%=viewingUser%>">
+  <input id="eventSerial" type="hidden" class="<%=targetEvent%>">
 
-    Potential Times: </br>
-    <%datedata.forEach(element => {%>
-    Date: <%=element.start_date%> at <%=element.start_time%> </br>
-    <%});%>
+
+  <h1>Schoodle event</h1>
+  <h2>Event Title</h2>
+  <div class="title"></div>
+  <br>
+  <h2>Description:</h2>
+  <div class="description"></div>
+  <br>
+  <h2>Where:</h2>
+  <div class="location"></div>
+  <br>
+  <hr>
+  <br>
+  <div class="voteBox"></div>
 
   </body>
 </html>

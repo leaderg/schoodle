@@ -60,30 +60,47 @@ app.get("/contact", (req, res) => {
 });
 
 app.post("/newevent", (req, res) => {
-  console.log("receiving request")
   let genCookie = generateRandomString();
+  let eventSerial = generateRandomString();
+  let scopeUserId;
+  let scopeEventId;
   req.session.cookie_id = genCookie;
-  knex('users').insert({
-    name: req.body.name,
-    email: req.body.email,
-    cookieid: genCookie
-  }, 'id').asCallback((err, result) => {
-    // console.log(result);
+  knex('users')
+    .insert({
+      name: req.body.name,
+      email: req.body.email,
+      cookieid: genCookie
+    }, 'id')
+    .asCallback((err, result) => {
     if (err) {
       return console.error("Connection Error", err);
     }
-    knex('events').insert({
-      title: req.body.title,
-      description: req.body.description,
-      location: req.body.location,
-      users_id: result[0],
-      url: generateRandomString()
-    }, 'url').asCallback((err, result) => {
-      if (err) {
-        return console.error("Connection Error", err);
-      }
-      res.redirect(`/events/dates/${result}`);
-    });
+    scopeUserId = Number(result[0]);
+    knex('events')
+      .insert({
+        title: req.body.title,
+        description: req.body.description,
+        location: req.body.location,
+        users_id: result[0],
+        url: eventSerial
+      }, "events_id")
+      .asCallback((err, output) => {
+        if (err) {
+          return console.error("Connection Error", err);
+        }
+        console.log(`
+          output: ${output}
+          output[0]: ${output[0]}
+          Number(output[0]): ${Number(output[0])}`)
+        knex('participants')
+        .insert({
+          users_id: scopeUserId,
+          events_id: Number(output[0])
+        })
+        .then(x => {
+          res.redirect(`/events/dates/${eventSerial}`);
+        });
+      });
   });
 });
 
@@ -100,45 +117,24 @@ app.get("/events/dates/:eventID", (req, res) => {
     }
   });
 });
-///////////////////////////////////////////
+
 app.get("/events/vote/:sharedurl", (req, res) => {
   if (!req.session.cookie_id){
     let templatevars = {};
     templatevars.sharedurl = req.params.sharedurl;
     res.render("participant", templatevars);
+  // } else if () {
+  // People with cookie not part of event shouldn't see it ---stretch
   } else {
     let templatevars = {};
-    let targetEvent = req.params.sharedurl;
-    knex.select('title','description', 'location', 'date', 'start_time').from('date')
-        .leftOuterJoin('time', 'date.id', 'dateID')
-        .leftOuterJoin('events', 'events.id', 'eventID')
-        .where('events.id', '=', 1)
-    // knex('events').where({url: targetEvent})
+    templatevars.targetEvent = req.params.sharedurl;
+    knex('users').select('id').where('cookieid', '=', req.session.cookie_id)
     .then( x => {
-      templatevars.eventTitle = x[0].title;
-      templatevars.eventDescription = x[0].description;
-      templatevars.eventLocation = x[0].location;
-      let dateTime = [];
-      for (let element of x){
-        dateTime.push(element.date + " " + element.start_time);
-      }
-      templatevars.eventTime = dateTime;
-console.log('dateTime', dateTime);
-console.log('templatevars', templatevars)
-      return x[0].id;
+      templatevars.viewingUser = x[0].id;
+      res.render('option', templatevars);
     })
-    .then( y => {
-      knex('options').where({events_id: y}).then( output => {
-        templatevars.datedata = output;
-        console.log(templatevars);
-        res.render('option', templatevars);
-      });
-    });
   }
 });
-////////////////////////////////////////////////
-
-
 
 app.get("/events/url/:eventID", (req, res) => {
   let templatevars = {};
@@ -167,43 +163,14 @@ app.get("/events/dates/:eventID", (req, res) => {
       throw err;
     } else {
       let templateVars = {
-                          id: result,
-                          eventURL: req.params.eventID
-                         };
+        id: result,
+        eventURL: req.params.eventID
+      };
       console.log(templateVars);
       res.render("dates", templateVars);
     }
   });
 });
-
-
-app.get("/events/vote/:sharedurl", (req, res) => {
-  if (!req.session.cookie_id){
-    let templatevars = {};
-    templatevars.sharedurl = req.params.sharedurl;
-    res.render("participant", templatevars);
-  } else {
-    let templatevars = {};
-    let targetEvent = req.params.sharedurl;
-    knex('events').where({url: targetEvent})
-    .then( x => {
-      templatevars.eventTitle = x[0].title;
-      templatevars.eventDescription = x[0].description;
-      templatevars.eventLocation = x[0].location;
-      return x[0].id;
-    })
-    .then( y => {
-      knex('options').where({events_id: y}).then( output => {
-        templatevars.datedata = output;
-        console.log(templatevars);
-        res.render('option', templatevars);
-      });
-    });
-  }
-});
-
-
-
 
 
 app.get("/events/times/:eventID", (req, res) => {
@@ -220,9 +187,10 @@ console.log('err2')
           throw err;
         } else {
 console.log('test2')
-          let templateVars = { dates: result,
-                               eventURL: req.params.eventID
-                              };
+          let templateVars = {
+            dates: result,
+            eventURL: req.params.eventID
+          };
           console.log(templateVars);
           res.render("times", templateVars);
         }
@@ -281,20 +249,59 @@ console.log("test on the then")
 app.get("/events/:sharedurl", (req, res) => {
   res.render("option");
 });
+
 app.post("/newuser", (req, res) => {
   let genCookie = generateRandomString();
   req.session.cookie_id = genCookie;
-  knex('users').insert({
-    name: req.body.name,
-    email: req.body.email,
-    cookieid: genCookie
+  let scopeUserId;
+  let scopeEventId;
+  knex('events').select('events_id').where('url', req.body.sharedurl)
+    .then(result => {
+      scopeEventId = result[0].events_id;
+      knex('users').insert({
+        name: req.body.name,
+        email: req.body.email,
+        cookieid: genCookie
+        }, "id")
+    .then(output => {
+      knex('participants').insert({
+        users_id: Number(output[0]),
+        events_id: scopeEventId
+      })
+    .then(x => res.redirect(`/events/vote/${req.body.sharedurl}`))
+    })
   })
-  .then(x => res.redirect(`/events/vote/${req.body.sharedurl}`))
+});
+
+app.post("/optionchoice", (req, res) => {
+  knex('options')
+  .insert({
+      users_id: req.body.users_id,
+      events_id: req.body.events_id,
+      date: req.body.date,
+      start_time: req.body.start_time
+    })
+  .asCallback(function() {
+    res.send('Received');
+  })
+});
+
+
+
+app.post("/refresh", (req, res) => {
+  console.log(`Receive JSON get request.`)
+  console.log(`looking for "url" = ${req.body.eventSerial}`)
+  buildObjectFromURL(req.body.eventSerial, function(output) {
+    res.json(output);
+  });
+
 });
 
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
 });
+
+
 
 
 
@@ -308,3 +315,28 @@ function generateRandomString() {
  return result;
 };
 
+function buildObjectFromURL(url, cb) {
+  let jsonReply = {};
+  knex.select('*').from('events').where('url', url)
+  .then((result) => {
+      jsonReply.event = result[0];
+    return result[0].events_id;
+    })
+  .then((eventID) => {
+    knex.select('*').from('options').where('events_id', eventID).then((optionList) => {
+      jsonReply.options = optionList;
+      return eventID
+    })
+  .then((eventID) => {
+    //this could be better using joins.
+    knex('participants').where('events_id', eventID)
+    .join('users', 'users.id', 'participants.users_id')
+    .select('users.id','users.name')
+    .then((participantList) => {
+      jsonReply.participants = participantList;
+      cb(jsonReply);
+    })
+  })
+
+});
+}

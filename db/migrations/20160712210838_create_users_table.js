@@ -30,10 +30,17 @@ exports.up = function(knex, Promise) {
     table.biginteger('events_id').references('events_id').inTable('events');
     table.string('date');
     table.string('start_time');
+  })
+  .createTable('participants', function (table) {
+    table.increments('id');
+    table.biginteger('users_id').references('id').inTable('users');
+    table.biginteger('events_id').references('events_id').inTable('events');
   });
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTable('time').dropTable('date').dropTable('options').dropTable('events').dropTable('users');
-// .dropTable('cookies')
+  return knex.schema.dropTable('participants').dropTable('options').dropTable('time')
+  .dropTable('date').dropTable('events').dropTable('users');
+
+// .dropTable('participants')
 };
