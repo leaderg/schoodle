@@ -1,9 +1,9 @@
 main {
-  width: 30%;
+  width: 40%;
   background-color: #efefef;
   padding: 1em 2em;
   margin: 2em 3em;
-  border-radius: 2em;
+  border-radius: 1em;
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 
 }
@@ -26,8 +26,9 @@ h3 {
 }
 
 div.title {
-  font-size: 1.5em;
-  margin-left: 1em;
+  font-size: 2.5em;
+  text-align: center;
+  font-weight: bold;
 }
 
 div.description {
@@ -41,11 +42,11 @@ div.location {
 }
 
 .userdiv {
-  display: inline-block;
+  display: table;
   background-color: #efefef;
   padding: 1em 2em;
   margin: 1em 3em;
-  border-radius: 2em;
+  border-radius: 1em;
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
