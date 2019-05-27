@@ -3,20 +3,28 @@
   <head>
     <title>Home Page</title>
 
-    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/nav.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/footer.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/option.css" type="text/css" />
 
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
     <script type="text/javascript" src="/scripts/voteTest.js"></script>
   </head>
 
   <body>
+
+    <header>
+      <% include ./partials/_nav %>
+    </header>
+
   <input id="viewingUser" type="hidden" class="<%=viewingUser%>">
   <input id="eventSerial" type="hidden" class="<%=targetEvent%>">
 
 
-  <h1>Schoodle event</h1>
   <h2>Event Title</h2>
   <div class="title"></div>
   <br>
@@ -29,6 +37,12 @@
   <hr>
   <br>
   <div class="voteBox"></div>
+
+
+
+    <footer>
+      <% include ./partials/_footer %>
+    </footer>
 
   </body>
 </html>
