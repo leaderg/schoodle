@@ -286,6 +286,20 @@ app.post("/optionchoice", (req, res) => {
   })
 });
 
+app.post("/optionremove", (req, res) => {
+  knex('options')
+  .where({
+      users_id: req.body.users_id,
+      events_id: req.body.events_id,
+      date: req.body.date,
+      start_time: req.body.start_time
+    })
+  .del()
+  .asCallback(function() {
+    res.send('Received');
+  })
+});
+
 
 
 app.post("/refresh", (req, res) => {

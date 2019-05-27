@@ -40,9 +40,8 @@ function makeGreen(data) {
   const options = data.options;
   options.forEach(option => {
     let elementselector = `div#${option.users_id} div.optionsRow button.${option.date}.${option.start_time}`
-    $(elementselector).css("background-color", "green");
+    $(elementselector).data('chosen', true).css("background-color", "green");
   });
-  console.log("Done making it green.")
 }
 //{id: 7, users_id: "1", events_id: "1", date: "2019-05-11", start_time: "3am"}
 
@@ -58,19 +57,32 @@ $.post('/refresh', {
   makeGreen(data);
 
   $('.optionbutton').click(function(event) {
-    let participant = $(this).parent().parent().attr('id')
+    let participant = $(this).parent().parent().attr('id');
     if ((viewingUserId === participant) && (participant !== data.event.users_id) ) {
       console.log(`Clicked`);
-      $.post('/optionchoice',{
-        'users_id': participant,
-        'events_id': data.event.events_id,
-        'date': $(this).data('optionDate'),
-        'start_time': $(this).data('optionTime')
-      },
-      function() {
-        $('.voteBox').empty()
-        buildPage();
-      });
+      if ($(this).data('chosen') === true) {
+        $.post('/optionremove',{
+          'users_id': participant,
+          'events_id': data.event.events_id,
+          'date': $(this).data('optionDate'),
+          'start_time': $(this).data('optionTime')
+        },
+        function() {
+          $('.voteBox').empty()
+          buildPage();
+        })
+      } else {
+        $.post('/optionchoice',{
+          'users_id': participant,
+          'events_id': data.event.events_id,
+          'date': $(this).data('optionDate'),
+          'start_time': $(this).data('optionTime')
+        },
+        function() {
+          $('.voteBox').empty()
+          buildPage();
+        })
+      };
     }
   })
 });
