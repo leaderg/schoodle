@@ -39,6 +39,8 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTable('time').dropTable('date').dropTable('options').dropTable('events').dropTable('users');
+  return knex.schema.dropTable('participants').dropTable('options').dropTable('time')
+  .dropTable('date').dropTable('events').dropTable('users');
+
 // .dropTable('participants')
 };
