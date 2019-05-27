@@ -1,17 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Thank you</title>
+    <title>Home Page</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
     <link rel="stylesheet" href="/styles/nav.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/url.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/index.css" type="text/css" />
+
+
 
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
     <script type="text/javascript" src="/scripts/app.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+
   </head>
 
   <body>
@@ -20,19 +28,23 @@
       <% include ./partials/_nav %>
     </header>
 
+    <main class="container">
 
-    <h1>Thank you for using Schoodle</h1>
-      <h3>Here is the url to share with your friends!</h3>
-      <input class="form-control" type="text" value="http://localhost:8080/events/vote/<%= url%>">
-      <button class="btn-primary" onclick="myFunction()"><i class="fas fa-copy"></i>Copy url </button>
+      <h1 style="font-size: 100px">Design by Greg and Matthew!!!</h1>
 
+      <h1 style="cursor: pointer" onclick="myFunction()">To call us</h1>
+
+      <span style="display: none" id="hidden"> GO AHEAD, WE CAN HEAR YOU! <br/>
+          AND THANK YOU!</span>
 
       <script>
         function myFunction() {
-          var copyText = document.getElementById("myInput");
-          copyText.select();
-          document.execCommand("copy");
+          document.getElementById("hidden").setAttribute("style", "display: block;font-size:100px;text-align:center;");
         }
-        </script>
+      </script>
+
+
+  </main>
+
   </body>
 </html>

@@ -1,31 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Home Page</title>
+    <title>Create New Event</title>
 
-    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/nav.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/newevent.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/footer.css" type="text/css" />
 
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
     <script type="text/javascript" src="/scripts/app.js"></script>
   </head>
 
   <body>
-    <h1>Welcome to Schoodle</h1>
-    <h2>What’s the occasion?</h2>
-      <form action="/newevent" method="POST">
-        <h3> Title </h3>
-        <input class="form-control" type="text" name="title" style="width: 300px">
-        <h3> Description (optional) </h3>
-        <input class="form-control" type="text" name="description" style="width: 300px">
-        <h3> Location (optional) </h3>
-        <input class="form-control" type="text" name="location" style="width: 300px">
-        <h3> Your name </h3>
-        <input class="form-control" type="text" name="name" style="width: 300px">
-        <h3> Your E-mail address </h3>
-        <input class="form-control" type="text" name="email" style="width: 300px">
-        <button type="submit" class="btn btn-primary">Create Event</button>
-      </form>
+
+    <header>
+      <% include ./partials/_nav %>
+    </header>
+
+
+    <main class="container">
+
+      <h2>What’s the occasion?</h2>
+
+        <form action="/newevent" method="POST" >
+          <h4> Title </h4>
+          <a><i class="fas fa-feather fa-2x"></i>
+            <input id='b' class="form-control" type="text" name="title" placeholder="Title"style="width:30em; display: inline-block">
+          </a>
+          <h4> Description</h4>
+          <a><i class="fas fa-edit fa-2x"></i>
+            <input class="form-control" type="text" name="description" placeholder="Description (optional)"style="width:30em; display: inline-block">
+          </a>
+          <h4> Location</h4>
+          <a><i class="fas fa-map-pin fa-2x"></i>
+            <input class="form-control" type="text" name="location" placeholder="Location (optional)"style="width:30em; display: inline-block">
+          </a>
+          <h4> Name</h4>
+          <a><i class="fas fa-user fa-2x"></i>
+            <input id='c' class="form-control" type="text" name="name" placeholder="Name"style="width:30em; display: inline-block">
+          </a>
+          <h4> E-mail</h4>
+          <a><i class="fas fa-envelope-open-text fa-2x"></i>
+            <input id='d' class="form-control" type="text" name="email" placeholder="E-mail address"style="width:30em; display: inline-block">
+          </a>
+
+          <ul><button id='a' type="submit" class="btn btn-primary">Create Event</button></ul>
+        </form>
+
+
+      </main>
+
+      <footer>
+        <% include ./partials/_footer %>
+      </footer>
+
   </body>
 </html>

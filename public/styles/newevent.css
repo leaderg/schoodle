@@ -1,0 +1,60 @@
+.container {
+  width: 60%;
+  height: 40em;
+  background-color: white;
+  padding: 1em;
+  margin-top: 3em;
+  border-radius: 2em;
+}
+
+ul {
+  padding-inline-start: 0;
+  text-align: right;
+}
+
+form {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.fa-feather {
+  color: #62c767;
+  padding-right: 0.3em;
+}
+
+.fa-edit {
+  color: #62c767;
+  padding-right: 0.2em;
+}
+
+.fa-map-pin {
+  color: #62c767;
+  padding-right: 0.7em;
+}
+
+.fa-user {
+  color: #62c767;
+  padding-right: 0.3em;
+}
+
+.fa-envelope-open-text {
+  color: #62c767;
+  padding-right: 0.2em;
+}
+ #a {
+  margin-top: 1.4em;
+  width: 100%;
+ }
+
+#hidden {
+  display: none;
+  font-size:17px;
+  text-align:center;
+  margin-top:26.5em;
+  color:#254751;
+
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+}

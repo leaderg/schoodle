@@ -55,6 +55,10 @@ app.get("/newevent", (req, res) => {
   res.render("newevent");
 });
 
+app.get("/contact", (req, res) => {
+  res.render("contact");
+});
+
 app.post("/newevent", (req, res) => {
   let genCookie = generateRandomString();
   let eventSerial = generateRandomString();
@@ -133,7 +137,6 @@ app.get("/events/vote/:sharedurl", (req, res) => {
 });
 
 app.get("/events/url/:eventID", (req, res) => {
-console.log('urltest1')
   let templatevars = {};
   let targetEvent = req.params.eventID;
   knex.select('users_id', 'events.events_id', 'date', 'start_time').from('date')
@@ -144,7 +147,7 @@ console.log('urltest1')
   let rows = x;
   knex.batchInsert('options', rows)
       .then((result) => {
-        res.render("url");
+        res.render("url", {url: req.params.eventID});
         })
       .catch((err)=>{
         return console.error("Connection Error", err);

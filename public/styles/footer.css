@@ -1,0 +1,12 @@
+#footer-bar {
+  position: fixed;
+  bottom: 0;
+  height: 40px;
+  color: #808080;
+  text-align: center;
+  font-size: 1.5em;
+  background: #ececec;
+  width: 100%;
+  padding: 0 2em;
+  z-index: 1;
+}
