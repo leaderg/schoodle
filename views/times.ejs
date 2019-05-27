@@ -26,9 +26,9 @@
 
 
 
-    <h1>something here</h1>
+    <h2>Times</h2>
 
-    <h3 class='subtitle'>Pick a time</h3>
+    <h4 class='subtitle'>Enter any number of time proposals for each day. You can enter the time in all formats: 7 o'clock, 13:00, 6am Calgary time or EVEN "dogs" if your friends can understand it!</h4>
 
   <form method = "POST" action="/events/times/<%= eventURL %>">
     <% for(let element of dates){ %>
@@ -36,7 +36,7 @@
         <ul id=<%= element.id %>>
           <input class="time form-control" type="text" name= <%= element.id %>>
         </ul>
-        <button id="add" type="button" onclick="myFunction('<%= element.id %>')">Add new time
+        <button id="add" type="button" onclick="myFunction('<%= element.id %>')">Add new slot
         </button>
     <% } %>
 

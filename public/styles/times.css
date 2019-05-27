@@ -10,7 +10,7 @@
 
 .subtitle {
   text-align: left;
-  padding-inline-start:40px;
+  margin:20px 40px;
 }
 
 #add {
@@ -20,8 +20,7 @@
   color: #efd99e;
   font-size: 1.3em;
   border-radius: 0.2em;
-  border: 0.2em grey;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  border: 0.07em solid grey;
 }
 
 #add:hover {
@@ -32,8 +31,14 @@
 
 ul {
   display: flex;
+  color: black;
 }
 
+h2 {
+  text-align: left;
+  margin-left: 40px;
+  font-weight: bold;
+}
 .btn-primary {
   margin-top: 2.5em;
   width: 20%;

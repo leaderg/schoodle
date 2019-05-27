@@ -7,10 +7,23 @@
 }
 
 .btn-primary {
-  margin-top: 2em;
+  margin-top: 7%;
   width: 20%;
 }
 
 .fas {
   margin-right: 1em;
+}
+
+.vote {
+  margin-top: 12%;
+}
+
+h1 {
+  margin-top: 10%;
+  font-weight: bold;
+}
+
+h4 {
+  margin-top: 5%;
 }

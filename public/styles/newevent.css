@@ -16,6 +16,11 @@ form {
   position: absolute;
   left: 50%;
   transform: translate(-50%, 0);
+  width: 50%;
+}
+
+a {
+  padding-left: 6%;
 }
 
 .fa-feather {
