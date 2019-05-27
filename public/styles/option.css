@@ -1,4 +1,55 @@
-body h1, h2,h3,h4,h5,h6 {
-  text-align: left;
-  margin-left: 40px;
+main {
+  width: 40%;
+  background-color: #efefef;
+  padding: 1em 2em;
+  margin: 2em 3em;
+  border-radius: 2em;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+
 }
+
+button {
+  border-radius: 8px;
+  background-color: #eee;
+  margin: 0 3px;
+  font-size: 1.5em;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+
+}
+
+h2 {
+  text-align: Left;
+  font-weight: bold;
+}
+
+div.title {
+  font-size: 1.5em;
+  margin-left: 1em;
+}
+
+div.description {
+  font-size: 1.5em;
+  margin-left: 1em;
+}
+
+div.location {
+  font-size: 1.5em;
+  margin-left: 1em;
+}
+
+.userdiv {
+  display: inline-block;
+  background-color: #efefef;
+  padding: 1em 2em;
+  margin: 1em 3em;
+  border-radius: 2em;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.namecard {
+  font-weight: bold;
+  font-size: 1.75em;
+  border-bottom: 2px solid grey;
+  margin-bottom: 5px;
+}
+

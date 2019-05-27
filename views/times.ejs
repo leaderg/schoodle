@@ -34,7 +34,7 @@
     <% for(let element of dates){ %>
         <ul id='date'><%= element.date %></ul>
         <ul id=<%= element.id %>>
-          <input class="time form-control" type="text" name= <%= element.id %>>
+          <input required class="time form-control" type="text" name= <%= element.id %>>
         </ul>
         <button id="add" type="button" onclick="myFunction('<%= element.id %>')">Add new slot
         </button>
@@ -47,9 +47,10 @@
    <script>
     function myFunction(data) {
       var newInput = document.createElement("input");
-      document.getElementById(data).appendChild(newInput);
-      newInput.setAttribute('name', data);
+      newInput.setAttribute('required', true);
       newInput.setAttribute('class', "time form-control");
+      newInput.setAttribute('name', data);
+      document.getElementById(data).appendChild(newInput);
     }
     </script>
 

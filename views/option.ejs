@@ -24,25 +24,20 @@
   <input id="viewingUser" type="hidden" class="<%=viewingUser%>">
   <input id="eventSerial" type="hidden" class="<%=targetEvent%>">
 
-
-  <h2>Event Title</h2>
-  <div class="title"></div>
-  <br>
-  <h2>Description:</h2>
-  <div class="description"></div>
-  <br>
-  <h2>Where:</h2>
-  <div class="location"></div>
-  <br>
-  <hr>
-  <br>
+  <main>
+    <h2>Event</h2>
+    <div class="title"></div>
+    <h2>Description</h2>
+    <div class="description"></div>
+    <h2>Where</h2>
+    <div class="location"></div>
+  </main>
   <div class="voteBox"></div>
 
 
-
-    <footer>
-      <% include ./partials/_footer %>
-    </footer>
+  <footer>
+    <% include ./partials/_footer %>
+  </footer>
 
   </body>
 </html>
