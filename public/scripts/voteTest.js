@@ -12,7 +12,8 @@ function voteGrid(inputObj) {
     let $optionsRow = $('<div>', {class: 'optionsRow'});
     optionBox(person, inputObj, $optionsRow);
     $('<div/>', {
-      id: `${person.id}`
+      id: `${person.id}`,
+      class: 'userdiv'
     })
     .append($namecard)
     .append($optionsRow)
@@ -40,7 +41,7 @@ function makeGreen(data) {
   const options = data.options;
   options.forEach(option => {
     let elementselector = `div#${option.users_id} div.optionsRow button.${option.date}.${option.start_time}`
-    $(elementselector).data('chosen', true).css("background-color", "green");
+    $(elementselector).data('chosen', true).css("background-color", "#5ab95e");
   });
 }
 //{id: 7, users_id: "1", events_id: "1", date: "2019-05-11", start_time: "3am"}
