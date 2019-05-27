@@ -206,19 +206,32 @@ app.post("/events/times/:eventID", (req, res) => {
   let results = req.body;
   console.log(results);
   for (let ids in results){
-    for (let i = 0; i < results[ids].length; i++){
-console.log('test1')
-      knex('time').insert({
-                            dateID : ids,
-                            start_time: results[ids][i]
-                          }).asCallback((err, result) => {
+    if (typeof results[ids] === 'object') {
+    for (let timeOption of results[ids]){
+      knex('time')
+      .insert({
+        dateID : ids,
+        start_time: timeOption
+      })
+      .asCallback((err, result) => {
         if(err){
-console.log('err1')
+          throw err;
+        }
+      });
+    }} else {
+      knex('time')
+      .insert({
+        dateID : ids,
+        start_time: results[ids]
+      })
+      .asCallback((err, result) => {
+        if(err){
           throw err;
         }
       });
     }
   }
+  // res.sendStatus(200)
   res.redirect(`/events/url/${req.params.eventID}`);
 });
 
