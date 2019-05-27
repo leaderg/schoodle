@@ -59,7 +59,7 @@ $.post('/refresh', {
 
   $('.optionbutton').click(function(event) {
     let participant = $(this).parent().parent().attr('id')
-    if (viewingUserId === participant) {
+    if ((viewingUserId === participant) && (participant !== data.event.users_id) ) {
       console.log(`Clicked`);
       $.post('/optionchoice',{
         'users_id': participant,
