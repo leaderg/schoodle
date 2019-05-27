@@ -27,7 +27,7 @@
 
       <h2>What’s the occasion?</h2>
 
-        <form action="/newevent" method="POST" onsubmit='inputCheck(event)'>
+        <form action="/newevent" method="POST" >
           <h4> Title </h4>
           <a><i class="fas fa-feather fa-2x"></i>
             <input id='b' class="form-control" type="text" name="title" placeholder="Title"style="width:30em; display: inline-block">
@@ -52,22 +52,6 @@
           <ul><button id='a' type="submit" class="btn btn-primary">Create Event</button></ul>
         </form>
 
-         <span id="hidden">Please fill all required fields</span>
-
-          <script>
-            function inputCheck(event) {
-              let b= document.getElementById('a').value;
-              let c= document.getElementById('b').value;
-              let d= document.getElementById('c').value;
-              if (d == '' || b == '' || c == ''){
-                event.preventDefault();
-                let text = document.getElementById("hidden");
-                $(text).slideDown("slow").fadeOut(5000);
-
-                return false;
-              }
-            }
-          </script>
 
       </main>
 
