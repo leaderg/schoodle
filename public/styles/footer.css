@@ -1,12 +1,27 @@
 #footer-bar {
   position: fixed;
   bottom: 0;
+  left: 0;
   height: 40px;
   color: #808080;
   text-align: center;
-  font-size: 1.5em;
+  font-size: 1em;
   background: #ececec;
   width: 100%;
   padding: 0 2em;
   z-index: 1;
+}
+
+.fab {
+  float: right;
+  line-height: 40px;
+  margin: 0 3px;
+}
+.fab:hover {
+  cursor: pointer;
+  color: black;
+}
+
+span {
+  line-height: 40px;
 }

@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
     <link rel="stylesheet" href="/styles/nav.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/footer.css" type="text/css" />
     <link rel="stylesheet" href="/styles/index.css" type="text/css" />
 
 
@@ -32,16 +33,20 @@
 
       <h1 style="font-size: 100px">Design by Greg and Matthew!!!</h1>
 
-      <h1 style="cursor: pointer" onclick="myFunction()">To call us</h1>
+      <h1 style="cursor: pointer; text-decoration: underline;" onclick="myFunction()">click here for phone number</h1>
 
-      <span style="display: none" id="hidden"> GO AHEAD, WE CAN HEAR YOU! <br/>
-          AND THANK YOU!</span>
+      <span style="display: none" id="hidden"> Nice try! and Thanks! </span>
 
       <script>
         function myFunction() {
-          document.getElementById("hidden").setAttribute("style", "display: block;font-size:100px;text-align:center;");
+          document.getElementById("hidden").setAttribute("style", "display: block;font-size:80px;text-align:center;margin-top:35px;");
         }
       </script>
+
+
+      <footer>
+        <% include ./partials/_footer %>
+      </footer>
 
 
   </main>
