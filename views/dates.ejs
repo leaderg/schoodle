@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
     <link rel="stylesheet" href="/styles/nav.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/footer.css" type="text/css" />
     <link rel="stylesheet" href="/styles/dates.css" type="text/css" />
     <link rel="stylesheet" href="/styles/datepicker.css" type="text/css" />
 
@@ -26,30 +27,43 @@
     </header>
 
 
-    <h1>something here</h1>
+    <h1>Schedule an event</h1>
+
+
 
     <div class="container">
 
       <form method="POST" action="/events/dates/<%= url %>/<%= id[0].events_id %>" onsubmit='inputCheck(event)' autocomplete="off">
         <input hidden autocomplete="false">
 
-        <h3>pick the date</h3>
+        <h2>Days</h2>
+        <h3>Pick the dates you would like to choose</h3>
         <ul><input id='b' type="text" class="form-control date" placeholder="Pick the date" name = <%= id[0].events_id %>></ul>
       <ul><button type="submit" class="btn btn-primary" >continue</button></ul>
+
+
      </form>
+
+     <span id="hidden">Please enter the date(s)</span>
 
       <script>
         function inputCheck(event) {
           let val= document.getElementById('b').value;
           if (val == ''){
-            alert('Please enter a date');
             event.preventDefault();
+            let text = document.getElementById("hidden");
+            $(text).slideDown("slow").fadeOut(5000);
+
             return false;
           }
         }
       </script>
 
     </div>
+
+    <footer>
+      <% include ./partials/_footer %>
+    </footer>
 
 
 

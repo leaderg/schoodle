@@ -46,3 +46,15 @@ form {
   margin-top: 1.4em;
   width: 100%;
  }
+
+#hidden {
+  display: none;
+  font-size:17px;
+  text-align:center;
+  margin-top:26.5em;
+  color:#254751;
+
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
