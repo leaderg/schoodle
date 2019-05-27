@@ -113,15 +113,22 @@ app.get("/events/dates/:eventID", (req, res) => {
     }
   });
 });
+
 app.get("/events/vote/:sharedurl", (req, res) => {
   if (!req.session.cookie_id){
     let templatevars = {};
     templatevars.sharedurl = req.params.sharedurl;
     res.render("participant", templatevars);
+  // } else if () {
+  // People with cookie not part of event shouldn't see it ---stretch
   } else {
     let templatevars = {};
-    let targetEvent = req.params.sharedurl;
-    res.render('option', templatevars);
+    templatevars.targetEvent = req.params.sharedurl;
+    knex('users').select('id').where('cookieid', '=', req.session.cookie_id)
+    .then( x => {
+      templatevars.viewingUser = x[0].id;
+      res.render('option', templatevars);
+    })
   }
 });
 
@@ -263,19 +270,29 @@ app.post("/newuser", (req, res) => {
   })
 });
 
+app.post("/optionchoice", (req, res) => {
+  knex('options')
+  .insert({
+      users_id: req.body.users_id,
+      events_id: req.body.events_id,
+      date: req.body.date,
+      start_time: req.body.start_time
+    })
+  .asCallback(function() {
+    res.send('Received');
+  })
+});
 
-//Testing Route////////////////
-///////////////////////////////
-app.get("/testing", (req, res) => {
+
+
+app.post("/refresh", (req, res) => {
   console.log(`Receive JSON get request.`)
-  buildObjectFromURL('LLY24a', function(output) {
+  console.log(`looking for "url" = ${req.body.eventSerial}`)
+  buildObjectFromURL(req.body.eventSerial, function(output) {
     res.json(output);
   });
 
 });
-//
-///////////////////////////////
-///////////////////////////////
 
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
